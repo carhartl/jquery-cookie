@@ -63,3 +63,18 @@ test('delete', 2, function () {
     $.cookie('c', undefined);
     equals(document.cookie, '', 'should delete with undefined as value');
 });
+
+module('default options');
+
+test('path', 3, function () {
+  $.cookie.defaults.path = '/';
+  $.cookie('test', 'ok');
+  equals($.cookie('test'), 'ok', 'path "/" is ok');
+  
+  $.cookie('test', null);
+  equals(document.cookie, '', 'should delete with null as value');
+  
+  $.cookie.defaults.path = '/test';
+  $.cookie('test', 'ok');
+  equals($.cookie('test'), null, 'path "/test" should return null');
+});

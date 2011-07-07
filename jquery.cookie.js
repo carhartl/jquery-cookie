@@ -61,7 +61,11 @@ jQuery.cookie = function (key, value, options) {
     
     // key and at least value given, set cookie...
     if (arguments.length > 1 && String(value) !== "[object Object]") {
-        options = jQuery.extend({}, options);
+        var defaults = {};
+        for( i in jQuery.cookie.defaults ){
+          defaults[i] = jQuery.cookie.defaults[i];
+        }
+        options = jQuery.extend(defaults, options);
 
         if (value === null || value === undefined) {
             options.expires = -1;
@@ -89,3 +93,5 @@ jQuery.cookie = function (key, value, options) {
     var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
     return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 };
+
+jQuery.cookie.defaults = {};
