@@ -78,3 +78,11 @@ test('path', 3, function () {
   $.cookie('test', 'ok');
   equals($.cookie('test'), null, 'path "/test" should return null');
 });
+
+module('all cookie detail');
+
+test('$.cookie()', 2, function(){
+  deepEqual($.cookie(), {}, '$.cookie is {}');
+  $.cookie('test', 'ok');
+  deepEqual($.cookie(), {test: 'ok'}, '$.cookie is {test: \'ok\'}');
+});

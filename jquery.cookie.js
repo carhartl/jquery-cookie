@@ -61,10 +61,12 @@ jQuery.cookie = function (key, value, options) {
 
     // if arguments is blank, return all cookie detail
     if (arguments.length === 0){
-        var cookie_strings = document.cookie.split(';'), cookies = {};
-        for(var i = 0, l = cookie_strings.length; i < l; i ++){
-            var cookie = cookie_strings[i].match(/([^=]+)=(.+)/);
-            cookies[jQuery.trim(decodeURIComponent(cookie[1]))] = jQuery.trim(decodeURIComponent(cookie[2]));
+        var cookie_strings = document.cookie.split(';'), l = cookie_strings.length, cookies = {};
+        if(l > 0 && jQuery.trim(document.cookie) !== ''){
+          for(var i = 0; i < l; i ++){
+              var cookie = cookie_strings[i].match(/([^=]+)=(.+)/);
+              cookies[jQuery.trim(decodeURIComponent(cookie[1]))] = jQuery.trim(decodeURIComponent(cookie[2]));
+          }
         }
         return cookies;
     }
