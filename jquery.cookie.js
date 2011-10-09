@@ -65,7 +65,7 @@ jQuery.cookie = function (key, value, options) {
         if(l > 0 && jQuery.trim(document.cookie) !== ''){
           for(var i = 0; i < l; i ++){
               var cookie = cookie_strings[i].match(/([^=]+)=(.+)/);
-              if(typeof cookie !== 'undefined'){
+              if(typeof cookie !== 'undefined' && cookie !== null){
                 cookies[jQuery.trim(decodeURIComponent(cookie[1]))] = jQuery.trim(decodeURIComponent(cookie[2]));
               }
           }
