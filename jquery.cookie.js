@@ -37,5 +37,5 @@ jQuery.cookie = function (key, value, options) {
     // key and possibly options given, get cookie...
     options = value || {};
     var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
-    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : "";
 };
