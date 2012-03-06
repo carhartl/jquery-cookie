@@ -34,6 +34,11 @@ test('raw: true', 1, function () {
     equal($.cookie('c', { raw: true }), '%20v', 'should not decode');
 });
 
+test('embedded equals', 1, function() {
+    document.cookie = 'c=a=b';
+    equal($.cookie('c'), 'a=b', 'should include include the whole value');
+});
+
 
 module('write', before);
 
