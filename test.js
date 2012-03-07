@@ -7,62 +7,62 @@ var before = {
     }
 };
 
-
 module('read', before);
 
-test('simple value', 1, function () {
+test('simple value', 2, function () {
     document.cookie = 'c=v';
-    equals($.cookie('c'), 'v', 'should return value');
+    equal($.cookie('c'), 'v', 'should return value');
+	equal($.cookie('c'), 'v', 'value should be persistent');
 });
 
 test('empty value', 1, function () {
     $.cookie('c', '');
-    equals($.cookie('c'), '', 'should return value');
+    equal($.cookie('c'), '', 'should return value');
 });
 
 test('not existing', 1, function () {
-    equals($.cookie('whatever'), null, 'should return null');
+    equal($.cookie('whatever'), null, 'should return null');
 });
 
 test('decode', 1, function () {
     document.cookie = encodeURIComponent(' c') + '=' + encodeURIComponent(' v');
-    equals($.cookie(' c'), ' v', 'should decode key and value');
+    equal($.cookie(' c'), ' v', 'should decode key and value');
 });
 
 test('raw: true', 1, function () {
     document.cookie = 'c=%20v';
-    equals($.cookie('c', { raw: true }), '%20v', 'should not decode');
+    equal($.cookie('c', { raw: true }), '%20v', 'should not decode');
 });
 
 
 module('write', before);
 
 test('String primitive', 1, function () {
-    $.cookie('c', 'v');
-    equals(document.cookie, 'c=v', 'should write value');
+	$.cookie('c', 'v');
+    equal(document.cookie, 'c=v', 'should write value');
 });
 
 test('String object', 1, function () {
     $.cookie('c', new String('v'));
-    equals(document.cookie, 'c=v', 'should write value');
+    equal(document.cookie, 'c=v', 'should write value');
 });
 
 test('value "[object Object]"', 1, function() {
     $.cookie('c', '[object Object]');
-    equals($.cookie('c'), '[object Object]', 'should write value');
+    equal($.cookie('c'), '[object Object]', 'should write value');
 });
 
 test('number', 1, function() {
     $.cookie('c', 1234);
-    equals($.cookie('c'), '1234', 'should write value');
+    equal($.cookie('c'), '1234', 'should write value');
 });
 
 test('return value', 1, function () {
-    equals($.cookie('c', 'v'), 'c=v', 'should return written cookie string');
+    equal($.cookie('c', 'v'), 'c=v', 'should return written cookie string');
 });
 
 test('raw: true', 1, function () {
-    equals($.cookie('c', ' v', { raw: true }).split('=')[1],
+    equal($.cookie('c', ' v', { raw: true }).split('=')[1],
         ' v', 'should not encode');
 });
 
@@ -72,9 +72,72 @@ module('delete', before);
 test('delete', 2, function () {
     document.cookie = 'c=v';
     $.cookie('c', null);
-    equals(document.cookie, '', 'should delete with null as value');
+    equal(document.cookie, '', 'should delete with null as value');
 
     document.cookie = 'c=v';
     $.cookie('c', undefined);
-    equals(document.cookie, '', 'should delete with undefined as value');
+    equal(document.cookie, '', 'should delete with undefined as value');
 });
+
+//sadly, expiration times can not be checked natively on cookies once set, so we can't have tests for those
+module('expires option', before);
+test('can be called with a Date object', 2, function() {
+	var date = new Date();
+	date.setDate(date.getDate() + 1);
+	$.cookie('c', 'v', { expires: date });
+	ok(true);
+	equal(document.cookie, 'c=v', 'cookie exists');
+});
+
+test('can be called with a configuration object', 1, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			seconds: 0,
+			minutes: 0,
+			hours: 1,
+			days: 0,
+			months: 0,
+			years: 0
+		}
+	});
+	ok(true);
+});
+
+test('setting past values', 1, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			seconds: 0,
+			minutes: 0,
+			hours: -1,
+			days: 0,
+			months: 0,
+			years: 0
+		}
+	});
+	equal(document.cookie, '', 'should be deleted from the browser');
+});
+
+test('setting big values', 2, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			seconds: 0,
+			minutes: 0,
+			hours: 0,
+			days: 0,
+			months: 0,
+			years: 1000
+		}
+	});
+	ok(true, 'should not break anything');
+	equal(document.cookie, 'c=v', 'should persist');
+});
+
+test('missing values', 1, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			minutes: 5
+		}
+	});
+	ok(true, 'should not break anything');
+});
+

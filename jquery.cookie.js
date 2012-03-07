@@ -21,7 +21,28 @@
             if (typeof options.expires === 'number') {
                 var days = options.expires, t = options.expires = new Date();
                 t.setDate(t.getDate() + days);
-            }
+            } else if (typeof options.expires === 'object' && !(options.expires instanceof Date)) {
+				var defaultExpiration = {
+					seconds: 0,
+					minutes: 0,
+					hours: 0,
+					days: 0,
+					months: 0,
+					years: 0
+				};
+				var expiration = $.extend({}, defaultExpiration, options.expires);
+				
+				var now = new Date();
+				var fromNow = now.getTime() +
+					expiration.seconds                       * 1000 + 
+					expiration.minutes                  * 60 * 1000 +
+					expiration.hours               * 60 * 60 * 1000 +
+					expiration.days           * 24 * 60 * 60 * 1000 +
+					expiration.months    * 30 * 24 * 60 * 60 * 1000 + // yeah, approximately
+					expiration.years    * 365 * 24 * 60 * 60 * 1000;  // yeah, approximately
+				now.setTime(fromNow);
+				options.expires = now;
+			}
 
             value = String(value);
 

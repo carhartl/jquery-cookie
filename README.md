@@ -21,7 +21,7 @@ Create expiring cookie, 7 days from then:
 Create expiring cookie, valid across entire page:
 
     $.cookie('the_cookie', 'the_value', { expires: 7, path: '/' });
-
+	
 Read cookie:
 
     $.cookie('the_cookie'); // => 'the_value'
@@ -35,9 +35,44 @@ Delete cookie by passing null as value:
 
 ## Options
 
+### expires
+
+Define lifetime of the cookie. If omitted, the cookie is a session cookie.
+
+Value can be a `Number` (which will be interpreted as days from time of creation).
+
     expires: 365
 
-Define lifetime of the cookie. Value can be a `Number` (which will be interpreted as days from time of creation) or a `Date` object. If omitted, the cookie is a session cookie.
+It can also be a `Date` object.
+
+	var date = new Date();
+	date.setDay(date.getDay() + 7);
+	
+    $.cookie('the_cookie', 'the_value', { 
+		expires: date
+	});
+
+It can also be a custom object that will indicate how far from now the cookie should expire. 
+
+    $.cookie('the_cookie', 'the_value', { 
+		expires: {
+			days: 7
+		}		
+	});
+
+That is equivalent to the previous example, but you can specify any combination of `seconds`, `minutes`, `days`, `months`, `years`. Right now months are just considered to be 30 days and a year is considered to be 365 days.
+
+Another more complex exmaple: 
+
+    $.cookie('the_cookie', 'the_value', { 
+		expires: {
+			seconds: 15,
+			days: 7,
+			months: 3
+		}		
+	});
+
+### path
 
     path: '/'
 
@@ -45,13 +80,19 @@ Default: path of page where the cookie was created.
 
 Define the path where cookie is valid. *By default the path of the cookie is the path of the page where the cookie was created (standard browser behavior).* If you want to make it available for instance across the entire page use `path: '/'`.
 
+### domain
+
     domain: 'example.com'
 
 Default: domain of page where the cookie was created.
 
+### secure
+
     secure: true
 
 Default: `false`. If true, the cookie transmission requires a secure protocol (https).
+
+### raw
 
     raw: true
 
