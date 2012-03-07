@@ -78,3 +78,59 @@ test('delete', 2, function () {
     $.cookie('c', undefined);
     equal(document.cookie, '', 'should delete with undefined as value');
 });
+
+//sadly, expiration times can not be checked natively on cookies once set, so we can't have tests for those
+module('expires option', before);
+
+test('can be called with a configuration object', 1, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			seconds: 0,
+			minutes: 0,
+			hours: 1,
+			days: 0,
+			months: 0,
+			years: 0
+		}
+	});
+	ok(true);
+});
+
+test('setting past values', 1, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			seconds: 0,
+			minutes: 0,
+			hours: -1,
+			days: 0,
+			months: 0,
+			years: 0
+		}
+	});
+	equal(document.cookie, '', 'should be deleted from the browser');
+});
+
+test('setting big values', 2, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			seconds: 0,
+			minutes: 0,
+			hours: 0,
+			days: 0,
+			months: 0,
+			years: 1000
+		}
+	});
+	ok(true, 'should not break anything');
+	equal(document.cookie, 'c=v', 'should persist');
+});
+
+test('missing values', 1, function() {
+	$.cookie('c', 'v', { 
+		expires: {
+			minutes: 5
+		}
+	});
+	ok(true, 'should not break anything');
+});
+
