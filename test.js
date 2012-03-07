@@ -81,6 +81,13 @@ test('delete', 2, function () {
 
 //sadly, expiration times can not be checked natively on cookies once set, so we can't have tests for those
 module('expires option', before);
+test('can be called with a Date object', 2, function() {
+	var date = new Date();
+	date.setDate(date.getDate() + 1);
+	$.cookie('c', 'v', { expires: date });
+	ok(true);
+	equal(document.cookie, 'c=v', 'cookie exists');
+});
 
 test('can be called with a configuration object', 1, function() {
 	$.cookie('c', 'v', { 

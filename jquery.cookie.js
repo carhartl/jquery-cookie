@@ -21,7 +21,7 @@
             if (typeof options.expires === 'number') {
                 var days = options.expires, t = options.expires = new Date();
                 t.setDate(t.getDate() + days);
-            } else if (typeof options.expires === 'object') {
+            } else if (typeof options.expires === 'object' && !(options.expires instanceof Date)) {
 				var defaultExpiration = {
 					seconds: 0,
 					minutes: 0,
