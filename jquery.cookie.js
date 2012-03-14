@@ -12,15 +12,21 @@
 
         // key and at least value given, set cookie...
         if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
-            options = $.extend({}, options);
+            options = $.extend({
+                expiresBySeconds: false
+            }, options);
 
             if (value === null || value === undefined) {
                 options.expires = -1;
             }
 
             if (typeof options.expires === 'number') {
-                var days = options.expires, t = options.expires = new Date();
-                t.setDate(t.getDate() + days);
+                var time = options.expires, t = options.expires = new Date();
+
+                if(options.expiresBySeconds)
+                    t.setTime(t.getTime() + time * 1000);
+                else
+                    t.setDate(t.getDate() + time);
             }
 
             value = String(value);
