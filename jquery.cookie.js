@@ -36,11 +36,24 @@
 
         // key and possibly options given, get cookie...
         options = value || {};
-        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
+        var rawreturn = function(s) { return s; };
+        var decode = options.raw ? rawreturn : decodeURIComponent;
+        var un_rfc2068 = options.raw ? rawreturn : function(value) {
+            if (value.indexOf('"') === 0) {
+                // This is a quoted cookie as according to RFC2068, unescape
+                value = value.substr(1, value.length - 2);  // Remove the leading and trailing "
+                value = value.replace('\\"', '"');
+                value = value.replace('\\\\', '\\');
+            }
+            return value;
+        };
 
-        var pairs = document.cookie.split('; ');
+        var value, pairs = document.cookie.split('; ');
         for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
-            if (decode(pair[0]) === key) return decode(pair[1] || ''); // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
+            if (decode(pair[0]) === key) {
+                // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
+                return un_rfc2068(decode(pair[1] || ''));
+            }
         }
         return null;
     };
