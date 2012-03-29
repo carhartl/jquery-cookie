@@ -9,6 +9,18 @@
  */
 (function($) {
     $.cookie = function(key, value, options) {
+        
+        //check if cookies are enabled 
+		if (arguments.length == 0){
+			$.cookie('this_is_a_test_cookie', 'cookies_enabled');
+			if ($.cookie ('this_is_a_test_cookie') == 'cookies_enabled')
+		    {
+		    	$.cookie('this_is_a_test_cookie', null);
+		    	return true;
+		    }
+		    else
+		    	return false;
+		}
 
         // key and at least value given, set cookie...
         if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
