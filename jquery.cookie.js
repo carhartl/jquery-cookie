@@ -7,7 +7,16 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.opensource.org/licenses/GPL-2.0
  */
-(function($) {
+
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+})(function($) {
     $.cookie = function(key, value, options) {
 
         // key and at least value given, set cookie...
@@ -44,4 +53,4 @@
         }
         return null;
     };
-})(jQuery);
+});
