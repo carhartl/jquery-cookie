@@ -49,6 +49,8 @@ Define the path where cookie is valid. *By default the path of the cookie is the
 
 Default: domain of page where the cookie was created.
 
+Use `domain: 'all'` to set the cookie on the top most level domain possible. Useful if you need to share cookies between subdomains in a generic manner.
+
     secure: true
 
 Default: `false`. If true, the cookie transmission requires a secure protocol (https).

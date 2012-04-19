@@ -66,6 +66,20 @@ test('raw: true', 1, function () {
         ' v', 'should not encode');
 });
 
+test('domain', 1, function () {
+    equal($.cookie('c', ' v', { domain: "test.com" }).split('=')[2],
+        'test.com', 'should set domain');
+});
+
+test('domain: all', 3, function () {
+    equal($.cookie('c', ' v', { domain: "all", hostname: "www.sub.domain.co.uk" }).split('=')[2],
+        '.domain.co.uk', 'should find correct domain');
+    equal($.cookie('c', ' v', { domain: "all", hostname: "domain.co.uk" }).split('=')[2],
+        '.domain.co.uk', 'should find correct domain');
+    equal($.cookie('c', ' v', { domain: "all", hostname: "www.domain.com" }).split('=')[2],
+        '.domain.com', 'should find correct domain');
+});
+
 
 module('delete', before);
 
