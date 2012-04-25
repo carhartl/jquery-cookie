@@ -30,8 +30,13 @@ test('decode', 1, function () {
 });
 
 test('raw: true', 1, function () {
-    document.cookie = 'c=%20v';
-    equal($.cookie('c', { raw: true }), '%20v', 'should not decode');
+    document.cookie = 'c=%20v+';
+    equal($.cookie('c', { raw: true }), '%20v+', 'should not decode');
+});
+
+test('convert pluses to spaces', 1, function () {
+    document.cookie = 'c=a+b';
+    equal($.cookie('c'), 'a b', 'should convert plus to space');
 });
 
 
