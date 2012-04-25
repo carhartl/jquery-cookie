@@ -36,7 +36,10 @@
 
         // key and possibly options given, get cookie...
         options = value || {};
-        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
+
+        var decode = function(s) {
+            return options.raw ? s : decodeURIComponent((s || '').replace(/\+/g, ' '));
+        };
 
         var pairs = document.cookie.split('; ');
         for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
