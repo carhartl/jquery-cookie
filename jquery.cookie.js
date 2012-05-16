@@ -44,4 +44,8 @@
         }
         return null;
     };
+    
+    $.removeCookie = function(cookieName) {
+		$.cookie(cookieName, null);
+	};
 })(jQuery);

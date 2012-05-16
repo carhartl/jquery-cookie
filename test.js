@@ -78,3 +78,9 @@ test('delete', 2, function () {
     $.cookie('c', undefined);
     equal(document.cookie, '', 'should delete with undefined as value');
 });
+
+test('delete with $.removeCookie', 1, function () {
+    document.cookie = 'c=v';
+    $.removeCookie('c');
+    equal(document.cookie, '', 'should delete the cookie');
+});
