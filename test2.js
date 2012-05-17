@@ -1,4 +1,4 @@
-module('autoCookie (data-cookie)', {
+var setup = {
     setup: function () {
         var cookies = document.cookie.split('; '),
         	$cont;
@@ -6,166 +6,116 @@ module('autoCookie (data-cookie)', {
             document.cookie = c + '=; expires=' + new Date(0).toUTCString();
         }
         
-        $cont = $("<div id='container'></div>").appendTo("body");
-        $("<input type='text' id='text' data-cookie='textInput' value='textValue' />").appendTo($cont);
-    	$("<input type='checkbox' id='checkbox' data-cookie='checkboxInput' value='checkboxValue' />").appendTo($cont);
-    	$("<input type='radio' id='radio' data-cookie='radioInput' value='radioValue' />").appendTo($cont);
-    	$("<select id='select' data-cookie='selectInput' ><option value=''>...</option><option value='selectValue' selected=''></option></select>").appendTo($cont);
-    	$("<textarea id='textarea' data-cookie='textareaInput'>textareaValue</textarea>").appendTo($cont);
+        $("<div id='container'></div>").appendTo("body");
     },
     
     teardown: function() {
     	$("#container").remove();
     }
-});
+};
+
+module('autoCookie (data-cookie)', setup);
 test("cookie value", function() {
-	var $inputs = $("#container input, #container select, #container textarea");
+	$("<input type='text' id='text' data-cookie='textInput' />").appendTo("#container");
+	$("<textarea id='textarea' data-cookie='textareaInput'></textarea>").appendTo("#container");
+	$("<input type='checkbox' id='checkbox' data-cookie='checkboxInput' />").appendTo("#container");
+	$("<select id='select' data-cookie='selectInput'><option value=''>...</option><option value='selectValue'>.....</option></select>").appendTo("#container");
 	
 	$("#container").autoCookie();
-	
 	$("#text").val("textValue").trigger("blur");
-	$("#checkbox").val("checkboxValue").trigger("change");
-	$("#radio").val("radioValue").trigger("change");
-	$("#select").val("selectValue").trigger("change");
 	$("#textarea").val("textareaValue").trigger("blur");
+	$("#checkbox").prop("checked", true).trigger("change");
+	$("#select").val("selectValue").trigger("change");
 	
-	expect($inputs.length);
-	$inputs.each(function(index, el) {
-		deepEqual($.cookie("auto-cookie-" + el.id + "Input"), el.id + "Value", "The cookie is correct");
-	});
+	deepEqual($.cookie("auto-cookie-textInput"), "textValue", "The cookie value is correct");
+	deepEqual($.cookie("auto-cookie-textareaInput"), "textareaValue", "The cookie value is correct");
+	deepEqual($.cookie("auto-cookie-checkboxInput"), "true", "The cookie value is correct");
+	deepEqual($.cookie("auto-cookie-selectInput"), "selectValue", "The cookie value is correct");
 });
 test("input value", function() {
-	var $inputs = $("#container input, #container select, #container textarea");
+	$("<input type='text' id='text' data-cookie='textInput' />").appendTo("#container");
+	$("<textarea id='textarea' data-cookie='textareaInput'></textarea>").appendTo("#container");
+	$("<input type='checkbox' id='checkbox' data-cookie='checkboxInput' />").appendTo("#container");
+	$("<select id='select' data-cookie='selectInput'><option value=''>...</option><option value='selectValue'>.....</option></select>").appendTo("#container");
 	
 	$("#container").autoCookie();
-	
-	$("#text").trigger("blur");
-	$("#checkbox").trigger("change");
-	$("#radio").trigger("change");
-	$("#select").trigger("change");
-	$("#textarea").trigger("blur");
+	$("#text").val("textValue").trigger("blur").val("");
+	$("#textarea").val("textareaValue").trigger("blur").val("");
+	$("#checkbox").prop("checked", true).trigger("change").prop("checked", false);
+	$("#select").val("selectValue").trigger("change").val("");
 	
 	$("#container").off("blur change");
 	$("#container").autoCookie();
 	
-	expect($inputs.length);
-	$inputs.each(function(index, el) {
-		deepEqual(el.value, el.id + "Value", "The input value is correct");
-	});
+	deepEqual($("#text").val(), "textValue", "The input value is correct");
+	deepEqual($("#textarea").val(), "textareaValue", "The input value is correct");
+	deepEqual($("#checkbox").prop("checked"), true, "The input value is correct");
+	deepEqual($("#select").val(), "selectValue", "The input value is correct");
 });
 test("input empty value", function() {
-	var $inputs = $("#container input, #container select, #container textarea");
+	$("<input type='text' id='text' data-cookie='textInput' />").appendTo("#container");
+	$("<textarea id='textarea' data-cookie='textareaInput'></textarea>").appendTo("#container");
+	$("<select id='select' data-cookie='selectInput'><option value=''>...</option><option value='selectValue'>.....</option></select>").appendTo("#container");
 	
 	$("#container").autoCookie();
-	
-	$("#text").val("").trigger("blur");
-	$("#checkbox").val("").trigger("change");
-	$("#radio").val("").trigger("change");
-	$("#select").val("").trigger("change");
-	$("#textarea").val("").trigger("blur");
-	
-	$("#text").val("textValue");
-	$("#checkbox").val("checkboxValue");
-	$("#radio").val("radioValue");
-	$("#select").val("selectValue");
-	$("#textarea").val("textareaValue");
+	$("#text").val("").trigger("blur").val("textValue");
+	$("#textarea").val("").trigger("blur").val("textareaValue");
+	$("#select").val("").trigger("change").val("selectValue");
 	
 	$("#container").off("blur change");
 	$("#container").autoCookie();
 	
-	expect($inputs.length);
-	$inputs.each(function(index, el) {
-		deepEqual(el.value, "", "The input value is empty");
-	});
+	deepEqual($("#text").val(), "", "The input value is correct");
+	deepEqual($("#textarea").val(), "", "The input value is correct");
+	deepEqual($("#select").val(), "", "The input value is correct");
+});
+test("checkbox empty", function() {
+	$("<input type='checkbox' id='checkbox' data-cookie='checkboxInput' />").appendTo("#container");
+	
+	$("#container").autoCookie();
+	$("#checkbox").prop("checked", false).trigger("change").prop("checked", true);
+	
+	$("#container").off("blur change");
+	$("#container").autoCookie();
+	
+	deepEqual($("#checkbox").prop("checked"), false, "The input value is correct");
 });
 
-module('autoCookie (class="data-cookie[]")', {
-    setup: function () {
-        var cookies = document.cookie.split('; '),
-        	$cont;
-        for (var i = 0, c; (c = (cookies)[i]) && (c = c.split('=')[0]); i++) {
-            document.cookie = c + '=; expires=' + new Date(0).toUTCString();
-        }
-        
-        $cont = $("<div id='container'></div>").appendTo("body");
-        $("<input type='text' id='text' class='data-cookie[textInput]' value='textValue' />").appendTo($cont);
-    	$("<input type='checkbox' id='checkbox' class='data-cookie[checkboxInput]' value='checkboxValue' />").appendTo($cont);
-    	$("<input type='radio' id='radio' class='data-cookie[radioInput]' value='radioValue' />").appendTo($cont);
-    	$("<select id='select' class='data-cookie[selectInput]' ><option value=''>...</option><option value='selectValue' selected=''></option></select>").appendTo($cont);
-    	$("<textarea id='textarea' class='data-cookie[textareaInput]'>textareaValue</textarea>").appendTo($cont);
-    },
-    
-    teardown: function() {
-    	$("#container").remove();
-    }
-});
+module('autoCookie (class="data-cookie[]")', setup);
 test("cookie value", function() {
-	var $inputs = $("#container input, #container select, #container textarea");
+	$("<input type='text' id='text' class='data-cookie[textInput]' />").appendTo("#container");
+	$("<textarea id='textarea' class='data-cookie[textareaInput]'></textarea>").appendTo("#container");
+	$("<input type='checkbox' id='checkbox' class='data-cookie[checkboxInput]' />").appendTo("#container");
+	$("<select id='select' class='data-cookie[selectInput]'><option value=''>...</option><option value='selectValue'>.....</option></select>").appendTo("#container");
 	
 	$("#container").autoCookie();
-	
 	$("#text").val("textValue").trigger("blur");
-	$("#checkbox").val("checkboxValue").trigger("change");
-	$("#radio").val("radioValue").trigger("change");
-	$("#select").val("selectValue").trigger("change");
 	$("#textarea").val("textareaValue").trigger("blur");
+	$("#checkbox").prop("checked", true).trigger("change");
+	$("#select").val("selectValue").trigger("change");
 	
-	expect($inputs.length);
-	$inputs.each(function(index, el) {
-		deepEqual($.cookie("auto-cookie-" + el.id + "Input"), el.id + "Value", "The cookie is correct");
-	});
+	deepEqual($.cookie("auto-cookie-textInput"), "textValue", "The cookie value is correct");
+	deepEqual($.cookie("auto-cookie-textareaInput"), "textareaValue", "The cookie value is correct");
+	deepEqual($.cookie("auto-cookie-checkboxInput"), "true", "The cookie value is correct");
+	deepEqual($.cookie("auto-cookie-selectInput"), "selectValue", "The cookie value is correct");
 });
 test("input value", function() {
-	var $inputs = $("#container input, #container select, #container textarea");
+	$("<input type='text' id='text' class='data-cookie[textInput]' />").appendTo("#container");
+	$("<textarea id='textarea' class='data-cookie[textareaInput]'></textarea>").appendTo("#container");
+	$("<input type='checkbox' id='checkbox' class='data-cookie[checkboxInput]' />").appendTo("#container");
+	$("<select id='select' class='data-cookie[selectInput]'><option value=''>...</option><option value='selectValue'>.....</option></select>").appendTo("#container");
 	
 	$("#container").autoCookie();
-	
-	$("#text").trigger("blur");
-	$("#checkbox").trigger("change");
-	$("#radio").trigger("change");
-	$("#select").trigger("change");
-	$("#textarea").trigger("blur");
+	$("#text").val("textValue").trigger("blur").val("");
+	$("#textarea").val("textareaValue").trigger("blur").val("");
+	$("#checkbox").prop("checked", true).trigger("change").prop("checked", false);
+	$("#select").val("selectValue").trigger("change").val("");
 	
 	$("#container").off("blur change");
 	$("#container").autoCookie();
 	
-	expect($inputs.length);
-	$inputs.each(function(index, el) {
-		deepEqual(el.value, el.id + "Value", "The input value is correct");
-	});
-});
-test("input empty value", function() {
-	var $inputs = $("#container input, #container select, #container textarea");
-	
-	$("#container").autoCookie();
-	
-	$("#text").val("").trigger("blur");
-	$("#checkbox").val("").trigger("change");
-	$("#radio").val("").trigger("change");
-	$("#select").val("").trigger("change");
-	$("#textarea").val("").trigger("blur");
-	
-	$("#text").val("textValue");
-	$("#checkbox").val("checkboxValue");
-	$("#radio").val("radioValue");
-	$("#select").val("selectValue");
-	$("#textarea").val("textareaValue");
-	
-	$("#container").off("blur change");
-	$("#container").autoCookie();
-	
-	expect($inputs.length);
-	$inputs.each(function(index, el) {
-		deepEqual(el.value, "", "The input value is empty");
-	});
-});
-test("trigger scope", function() {
-	$("<input id='otherText' data-cookie='otherTextInput' value='otherTextValue'/>").appendTo("body");
-	
-	$("#container").autoCookie();
-	$("#otherText").trigger("blur");
-	
-	deepEqual($.cookie("auto-cookie-otherTextInput"), null, "Should trigger the cookie events only inside the selector");
-	
-	$("#otherText").remove();
+	deepEqual($("#text").val(), "textValue", "The input value is correct");
+	deepEqual($("#textarea").val(), "textareaValue", "The input value is correct");
+	deepEqual($("#checkbox").prop("checked"), true, "The input value is correct");
+	deepEqual($("#select").val(), "selectValue", "The input value is correct");
 });

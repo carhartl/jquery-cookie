@@ -52,7 +52,7 @@
 	$.fn.autoCookie = function() {
 		
 		var cookiePrefix = "auto-cookie-";
-		var selector = "input, select, textarea";
+		var selector = "input:text, input:checkbox, select, textarea";
 		var _dataName = function(e) {
 			var $this = this,
 				dataName = $this.data( "cookie" ),
@@ -71,7 +71,27 @@
 				}
 			}
 		return dataName;
-		}
+		};
+		var _setInputVal = function($input, val) {
+			var type = $input.attr("type");
+			
+			if(type == "checkbox") {
+				$input.prop("checked", eval(val));
+			} else {
+				$input.val(val);
+			}
+		};
+		var _getInputVal = function($input) {
+			var type = $input.attr("type"),
+				ret;
+			
+			if(type == "checkbox") {
+				ret = $input.prop("checked").toString();
+			} else {
+				ret = $input.val();
+			}
+		return ret;
+		};
 		
 		//set the value
 		$(selector, this).each(function(index, domElement) {
@@ -82,7 +102,7 @@
 			if(dataName) {
 				val = $.cookie(cookiePrefix + dataName);
 				if(val !== null) {
-					$this.val(val);
+					_setInputVal($this, val);
 				}
 			}
 		});
@@ -93,7 +113,7 @@
 				dataName = _dataName.apply($this, arguments);
 			
 			if(dataName) {
-				$.cookie(cookiePrefix + dataName, $this.val()); //if empty value remove the cookie
+				$.cookie(cookiePrefix + dataName, _getInputVal($this));
 			}
 		});
 	};
