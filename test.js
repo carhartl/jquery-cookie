@@ -1,6 +1,6 @@
 var before = {
     setup: function () {
-        cookies = document.cookie.split('; ')
+        var cookies = document.cookie.split('; ')
         for (var i = 0, c; (c = (cookies)[i]) && (c = c.split('=')[0]); i++) {
             document.cookie = c + '=; expires=' + new Date(0).toUTCString();
         }

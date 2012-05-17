@@ -48,4 +48,53 @@
     $.removeCookie = function(cookieName) {
 		$.cookie(cookieName, null);
 	};
+	
+	$.fn.autoCookie = function() {
+		
+		var cookiePrefix = "auto-cookie-";
+		var selector = "input, select, textarea";
+		var _dataName = function(e) {
+			var $this = this,
+				dataName = $this.data( "cookie" ),
+				className;
+			
+			//If no data attribute consider looking the className
+			if(dataName === undefined) {
+				className = $this.attr("class");
+				if(className) {
+					$.each(className.split(" "), function(index, _class) {
+						if(_class.substring(0, 11) == "data-cookie") {
+							dataName = _class.substring(12, _class.length - 1); //data-cookie[value_of_the_cookie_here]
+							return false; //only one class is allowed per element
+						}
+					});
+				}
+			}
+		return dataName;
+		}
+		
+		//set the value
+		$(selector, this).each(function(index, domElement) {
+			var $this = $(this),
+				dataName = _dataName.apply($this, arguments),
+				val;
+			
+			if(dataName) {
+				val = $.cookie(cookiePrefix + dataName);
+				if(val !== null) {
+					$this.val(val);
+				}
+			}
+		});
+		
+		//bind the events
+		$(this).on("blur change", selector, function(e) {
+			var $this = $(this),
+				dataName = _dataName.apply($this, arguments);
+			
+			if(dataName) {
+				$.cookie(cookiePrefix + dataName, $this.val()); //if empty value remove the cookie
+			}
+		});
+	};
 })(jQuery);
