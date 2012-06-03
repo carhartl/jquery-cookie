@@ -29,9 +29,14 @@ test('decode', 1, function () {
     equal($.cookie(' c'), ' v', 'should decode key and value');
 });
 
+test('rfc2068', 1, function () {
+    document.cookie = 'c="v@address.com\\"\\\\"';
+    equal($.cookie('c'), 'v@address.com"\\', 'should decode rfc2068 quoted string');
+});
+
 test('raw: true', 1, function () {
-    document.cookie = 'c=%20v';
-    equal($.cookie('c', { raw: true }), '%20v', 'should not decode');
+    document.cookie = 'c=%20v"\\';
+    equal($.cookie('c', { raw: true }), '%20v"\\', 'should not decode');
 });
 
 
