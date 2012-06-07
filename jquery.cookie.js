@@ -46,46 +46,46 @@
     };
     
     $.removeCookie = function(cookieName) {
-		$.cookie(cookieName, null);
+		$.cookie( cookieName, null );
 	};
 	
 	$.fn.autoCookie = function() {
 		
-		var cookiePrefix = "auto-cookie-";
-		var selector = "input:text, input:checkbox, select, textarea";
-		var _dataName = function(e) {
-			var $this = this,
-				dataName = $this.data( "cookie" ),
-				className;
+		var cookiePrefix = "auto-cookie-",
+			selector = "input:text, input:checkbox, select, textarea";
+		
+		function _dataName() {
+			var className,
+				$this = this,
+				dataName = $this.data("cookie");
 			
 			//If no data attribute consider looking the className
-			if(dataName === undefined) {
+			if( dataName === undefined ) {
 				className = $this.attr("class");
 				if(className) {
-					$.each(className.split(" "), function(index, _class) {
-						if(_class.substring(0, 11) == "data-cookie") {
-							dataName = _class.substring(12, _class.length - 1); //data-cookie[value_of_the_cookie_here]
-							return false; //only one class is allowed per element
+					$.each( className.split(" "), function( index, _class ) {
+						if( _class.substring(0, 11) == "data-cookie" ) {
+							dataName = _class.substring( 12, _class.length - 1 );
+							return false;
 						}
 					});
 				}
 			}
 		return dataName;
 		};
-		var _setInputVal = function($input, val) {
-			var type = $input.attr("type");
-			
-			if(type == "checkbox") {
-				$input.prop("checked", eval(val));
+		
+		function _setInputVal( $input, val ) {
+			if( $input.attr("type") === "checkbox" ) {
+				$input.prop( "checked", eval(val) );
 			} else {
 				$input.val(val);
 			}
 		};
-		var _getInputVal = function($input) {
-			var type = $input.attr("type"),
-				ret;
+		
+		function _getInputVal($input) {
+			var ret;
 			
-			if(type == "checkbox") {
+			if( $input.attr("type") === "checkbox" ) {
 				ret = $input.prop("checked").toString();
 			} else {
 				ret = $input.val();
@@ -93,27 +93,25 @@
 		return ret;
 		};
 		
-		//set the value
-		$(selector, this).each(function(index, domElement) {
-			var $this = $(this),
-				dataName = _dataName.apply($this, arguments),
-				val;
+		$( selector, this ).each(function( index, domElement ) {
+			var val,
+				$this = $(this),
+				dataName = _dataName.apply( $this, arguments );
 			
 			if(dataName) {
-				val = $.cookie(cookiePrefix + dataName);
-				if(val !== null) {
-					_setInputVal($this, val);
+				val = $.cookie( cookiePrefix + dataName );
+				if( val !== null ) {
+					_setInputVal( $this, val );
 				}
 			}
 		});
 		
-		//bind the events
-		$(this).on("blur change", selector, function(e) {
+		$(this).on( "blur change", selector, function(e) {
 			var $this = $(this),
-				dataName = _dataName.apply($this, arguments);
+				dataName = _dataName.apply( $this, arguments );
 			
 			if(dataName) {
-				$.cookie(cookiePrefix + dataName, _getInputVal($this));
+				$.cookie( cookiePrefix + dataName, _getInputVal($this) );
 			}
 		});
 	};
