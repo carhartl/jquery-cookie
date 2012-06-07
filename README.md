@@ -68,6 +68,22 @@ By default the cookie is encoded/decoded when creating/reading, using `encodeURI
 
 Pull requests are very welcome! Make sure your patches are well tested. Please create a topic branch for every separate change you make.
 
+# jquery.autoCookie
+Called once in the page (after the DOM has been fully loaded)
+    $.autoCookie();
+Given an element like
+    <input type="text" data-cookie="any_name" value="my_value"/>
+or
+    <input type="text" class="data-cookie[any_name]" value="my_value" />
+autoCookie will create a cookie with the name "any_name" holding the input value
+    $.cookie("any_name"); //my_value
+At the first autoCookie() call it will check all the inputs in the page with the specific data or class and set the value if a cookie already exist for that input
+## Supports
+* textearea
+* input:text
+* input:checkbox
+* select-one
+
 ## Authors
 
 [Klaus Hartl](https://github.com/carhartl)
