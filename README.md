@@ -91,7 +91,7 @@ autoCookie will create a cookie with the name "any_name" holding the input value
 
 At the first autoCookie() call it will check all the inputs in the page with the specific data or class and set the value if a cookie already exist for that input
 ## Supports
-* textearea
+* textarea
 * input:text
 * input:checkbox
 * select-one
