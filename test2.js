@@ -6,7 +6,7 @@ var setup = {
             document.cookie = c + '=; expires=' + new Date(0).toUTCString();
         }
         
-        $("<div id='container'></div>").appendTo("body");
+        $("<div id='container'></div>").appendTo( document.body );
     },
     
     teardown: function() {
@@ -118,4 +118,12 @@ test("input value", function() {
 	deepEqual($("#textarea").val(), "textareaValue", "The input value is correct");
 	deepEqual($("#checkbox").prop("checked"), true, "The input value is correct");
 	deepEqual($("#select").val(), "selectValue", "The input value is correct");
+});
+test("Invalid cookie value on checkbox", function() {
+	$("<input type='checkbox' id='checkbox' class='data-cookie[checkboxInput]' />").appendTo("#container");
+	
+	$.cookie("auto-cookie-checkboxInput", "hfhfd");
+	$("#container").autoCookie();
+	
+	deepEqual($("#checkbox").prop("checked"), false, "The input value is correct");
 });

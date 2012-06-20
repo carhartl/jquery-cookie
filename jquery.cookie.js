@@ -51,68 +51,70 @@
 	
 	$.fn.autoCookie = function() {
 		
-		var cookiePrefix = "auto-cookie-",
+		var prefix = "auto-cookie",
+			eventsName = "blur." + prefix + " change." + prefix,
 			selector = "input:text, input:checkbox, select, textarea";
-		
-		function _dataName() {
-			var className,
-				$this = this,
-				dataName = $this.data("cookie");
-			
-			//If no data attribute consider looking the className
-			if( dataName === undefined ) {
-				className = $this.attr("class");
-				if(className) {
-					$.each( className.split(" "), function( index, _class ) {
-						if( _class.substring(0, 11) == "data-cookie" ) {
-							dataName = _class.substring( 12, _class.length - 1 );
-							return false;
-						}
-					});
-				}
-			}
-		return dataName;
-		};
-		
-		function _setInputVal( $input, val ) {
-			if( $input.attr("type") === "checkbox" ) {
-				$input.prop( "checked", eval(val) );
-			} else {
-				$input.val(val);
-			}
-		};
-		
-		function _getInputVal($input) {
-			var ret;
-			
-			if( $input.attr("type") === "checkbox" ) {
-				ret = $input.prop("checked").toString();
-			} else {
-				ret = $input.val();
-			}
-		return ret;
-		};
 		
 		$( selector, this ).each(function( index, domElement ) {
 			var val,
 				$this = $(this),
-				dataName = _dataName.apply( $this, arguments );
+				_dataName = dataName.apply( $this, arguments );
 			
-			if(dataName) {
-				val = $.cookie( cookiePrefix + dataName );
+			if(_dataName) {
+				val = $.cookie( prefix + "-" + _dataName );
 				if( val !== null ) {
-					_setInputVal( $this, val );
+					setInputVal( $this, val );
 				}
 			}
 		});
 		
-		$(this).on( "blur change", selector, function(e) {
+		$(this).off( eventsName ).on( eventsName, selector, function(e) {
 			var $this = $(this),
-				dataName = _dataName.apply( $this, arguments );
+				_dataName = dataName.apply( $this, arguments );
 			
-			if(dataName) {
-				$.cookie( cookiePrefix + dataName, _getInputVal($this) );
+			if(_dataName) {
+				$.cookie( prefix + "-" + _dataName, getInputVal($this) );
 			}
 		});
 	};
+	
+	function dataName() {
+		var className,
+			$this = this,
+			_dataName = $this.data("cookie");
+		
+		//If no data attribute consider looking the className
+		if( _dataName === undefined ) {
+			className = $this.attr("class");
+			if(className) {
+				$.each( className.split(" "), function( index, _class ) {
+					if( _class.substring(0, 11) == "data-cookie" ) {
+						_dataName = _class.substring( 12, _class.length - 1 );
+						return false;
+					}
+				});
+			}
+		}
+	return _dataName;
+	}
+	
+	function setInputVal( $input, val ) {
+		if( $input.attr("type") === "checkbox" ) {
+			$input.prop( "checked", val === "true" );
+		} else {
+			$input.val(val);
+		}
+	}
+	
+	function getInputVal($input) {
+		var ret;
+		
+		if( $input.attr("type") === "checkbox" ) {
+			ret = $input.prop("checked").toString();
+		} else {
+			ret = $input.val();
+		}
+	return ret;
+	}
+	
 })(jQuery);
