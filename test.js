@@ -1,6 +1,6 @@
 var before = {
     setup: function () {
-        cookies = document.cookie.split('; ')
+        var cookies = document.cookie.split('; ')
         for (var i = 0, c; (c = (cookies)[i]) && (c = c.split('=')[0]); i++) {
             document.cookie = c + '=; expires=' + new Date(0).toUTCString();
         }
@@ -77,4 +77,10 @@ test('delete', 2, function () {
     document.cookie = 'c=v';
     $.cookie('c', undefined);
     equal(document.cookie, '', 'should delete with undefined as value');
+});
+
+test('delete with $.removeCookie', 1, function () {
+    document.cookie = 'c=v';
+    $.removeCookie('c');
+    equal(document.cookie, '', 'should delete the cookie');
 });
