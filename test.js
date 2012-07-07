@@ -20,6 +20,13 @@ test('empty value', 1, function () {
     equal($.cookie('c'), '', 'should return value');
 });
 
+test('simple value with an expires value', 1, function () {
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 5);
+    document.cookie = 'c=testcookie; expires=' + tomorrow.toUTCString();
+    equal($.cookie('c'), 'testcookie', 'should return value');
+});
+
 test('not existing', 1, function () {
     equal($.cookie('whatever'), null, 'should return null');
 });
@@ -55,6 +62,40 @@ test('value "[object Object]"', 1, function() {
 test('number', 1, function() {
     $.cookie('c', 1234);
     equal($.cookie('c'), '1234', 'should write value');
+});
+
+test('with expires as a number (7 days from now)', 1, function() {
+  var seven_days_from_now = new Date();
+  seven_days_from_now.setDate(seven_days_from_now.getDate() + 7);
+  equal($.cookie('c', 'v', {expires:7}), 'c=v; expires='+seven_days_from_now.toUTCString(), 'should return the cookie string with expires');
+});
+
+test('with expires as a negative number (yesterday)', 2, function() {
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  equal($.cookie('c', 'v', {expires:-1}), 'c=v; expires='+yesterday.toUTCString(), 'should return the cookie string with expires');
+  equal(document.cookie, '', 'should not save expired cookie');
+});
+
+test('with expires as an object ({hours:1, minutes:2, seconds:3, days:4})',1, function() {
+  var expiry = {
+    hours:1, 
+    minutes:2, 
+    days:4
+  };
+  var expected_expiry = new Date();
+  expected_expiry = new Date(expected_expiry.setHours(expected_expiry.getHours() + expiry.hours));
+  expected_expiry = new Date(expected_expiry.setMinutes(expected_expiry.getMinutes() + expiry.minutes));
+  expected_expiry.setDate(expected_expiry.getDate() + expiry.days);
+  equal($.cookie('c', 'v', {expires:expiry}), 'c=v; expires='+expected_expiry.toUTCString(), 'should return the cookie string with expires');
+});
+
+test('with expires as an object - ignores garbage ({myhours:1})',1, function() {
+  var expiry = {
+    myhours: 10 
+  };
+  var expected_expiry = new Date();
+  equal($.cookie('c', 'v', {expires:expiry}), 'c=v; expires='+expected_expiry.toUTCString(), 'should return the cookie string with expires');
 });
 
 test('return value', 1, function () {

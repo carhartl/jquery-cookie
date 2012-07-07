@@ -22,9 +22,27 @@
                 var days = options.expires, t = options.expires = new Date();
                 t.setDate(t.getDate() + days);
             }
-
+            else if (typeof options.expires === 'object') {
+              var expiry = options.expires, t = new Date();
+              for (var k in expiry) {
+                 switch(k) {
+                 case 'days':
+                   t.setDate(t.getDate() + expiry[k]);
+                   break;
+                 case 'hours':
+                   t = new Date(t.setHours(t.getHours() + expiry[k]));
+                   break;
+                 case 'minutes':
+                   t = new Date(t.setMinutes(t.getMinutes() + expiry[k]));
+                   break;
+                 case 'seconds':
+                   t = new Date(t.setSeconds(t.getSeconds() + expiry[k]));
+                   break;
+                 }
+              }
+              options.expires = t;
+            }
             value = String(value);
-
             return (document.cookie = [
                 encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
                 options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
