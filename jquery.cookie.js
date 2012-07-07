@@ -23,6 +23,12 @@
                 t.setDate(t.getDate() + days);
             }
 
+            if (options.domain === 'all') { // set cookie on top most domain
+                var hostname = options.hostname || window.location.hostname, // allows overriding hostname via options, mainly for testability
+                    match = hostname.match(/[^.]*\.([^.]*|..\...|...\...)$/);
+                options.domain = match ? "." + match[0] : hostname;
+            }
+
             value = String(value);
 
             return (document.cookie = [
