@@ -7,8 +7,10 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.opensource.org/licenses/GPL-2.0
  */
-(function($) {
+(function($, window) {
     $.cookie = function(key, value, options) {
+
+        var document = window.document;
 
         // key and at least value given, set cookie...
         if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value == null)) {
@@ -49,4 +51,4 @@
 
     $.cookie.defaults = {};
 
-})(jQuery);
+})(jQuery, window);
