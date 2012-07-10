@@ -37,8 +37,8 @@
             }
             
             if (typeof options.expires !=='undefined' && typeof options.expires !== 'number') {
-                if ($.inArray(options.expires.substr(-1),options.vailidUnits) > -1 ){
-                    options.expiresUnit = options.expires.substr(-1);
+                if ($.inArray(options.expires.substr(options.expires.length-1),options.vailidUnits) > -1 ){
+                    options.expiresUnit = options.expires.substr(options.expires.length-1);
                     options.expires = parseInt(options.expires);
                 }
             }
