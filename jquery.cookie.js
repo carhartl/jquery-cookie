@@ -1,6 +1,6 @@
 /*jshint eqnull:true */
 /*!
- * jQuery Cookie Plugin v1.1
+ * jQuery Cookie Plugin v1.1.1
  * https://github.com/carhartl/jquery-cookie
  *
  * Copyright 2011, Klaus Hartl
@@ -28,10 +28,15 @@
 				options.expires = -1;
 			}
 
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setDate(t.getDate() + days);
-			}
+		    if (typeof options.expires === 'number') {
+					if(options.expires > Math.round((new Date()).getTime()/1000)) {
+						var unixts = options.expires, t = options.expires = new Date();
+						t.setTime((unixts*1000));
+					} else {
+						var days = options.expires, t = options.expires = new Date();
+						t.setDate(t.getDate() + days);
+					}
+		    }
 
 			value = String(value);
 
