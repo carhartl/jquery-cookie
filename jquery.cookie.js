@@ -20,10 +20,22 @@
 		return decodeURIComponent(s.replace(pluses, ' '));
 	}
 
+	function isObj(o) {
+		return o && /Object/.test(Object.prototype.toString.call(o));
+	}
+	function isOptionsObj(o) {
+		if(!isObj(o)) return false;
+		for(var key in o) 
+			if(key !== "raw") return false;
+		return true;
+	}
+
 	$.cookie = function (key, value, options) {
 
 		// key and at least value given, set cookie...
-		if (value !== undefined && (JSON !== undefined || !/Object/.test(Object.prototype.toString.call(value))) ) {
+		if (value !== undefined && !isOptionsObj(value) && 
+			(JSON !== undefined || !isObj(value)) ) {
+			
 			options = $.extend({}, $.cookie.defaults, options);
 
 			if (value === null) {
@@ -53,7 +65,10 @@
 		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
 			if (decode(parts.shift()) === key) {
 				var cookie = decode(parts.join('='));
-				return JSON !== undefined ? JSON.parse(cookie) : cookie;
+				try {
+					return JSON !== undefined ? JSON.parse(cookie) : cookie;
+				} catch(e) {}
+				return cookie;
 			}
 		}
 

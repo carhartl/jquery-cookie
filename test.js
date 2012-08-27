@@ -9,6 +9,21 @@ var before = {
 	}
 };
 
+//Uncomment to simulate older browsers
+//JSON = undefined;
+
+//When JSON exists, it will store the values JSON encoded.
+//When testing against the output of $.cookie set,
+//the value needs to be transformed.
+//Maybe we should be always testing against $.cookie get ?
+function transform(value, raw) {
+	if(JSON !== undefined) value = JSON.stringify(value);
+	if(raw === undefined) raw = false;
+	if(!raw) value = encodeURIComponent(value);
+	return value;
+}
+
+
 
 module('read', before);
 
@@ -79,20 +94,21 @@ test('value "[object Object]"', 1, function () {
 
 test('number', 1, function () {
 	$.cookie('c', 1234);
+	//Note: JSON can store as int. So, == will pass and === will fail.
 	equal($.cookie('c'), '1234', 'should write value');
 });
 
 test('expires option as days from now', 1, function() {
 	var sevenDaysFromNow = new Date();
 	sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-	equal($.cookie('c', 'v', { expires: 7 }), 'c=v; expires=' + sevenDaysFromNow.toUTCString(),
+	equal($.cookie('c', 'v', { expires: 7 }), 'c='+transform('v')+'; expires=' + sevenDaysFromNow.toUTCString(),
 		'should write the cookie string with expires');
 });
 
 test('expires option as Date instance', 1, function() {
 	var sevenDaysFromNow = new Date();
 	sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-	equal($.cookie('c', 'v', { expires: sevenDaysFromNow }), 'c=v; expires=' + sevenDaysFromNow.toUTCString(),
+	equal($.cookie('c', 'v', { expires: sevenDaysFromNow }), 'c='+transform('v')+'; expires=' + sevenDaysFromNow.toUTCString(),
 		'should write the cookie string with expires');
 });
 
@@ -104,17 +120,16 @@ test('invalid expires option (in the past)', 1, function() {
 });
 
 test('return value', 1, function () {
-	equal($.cookie('c', 'v'), 'c=v', 'should return written cookie string');
+	equal($.cookie('c', 'v'), 'c='+transform('v'), 'should return written cookie string');
 });
 
 test('raw option set to true', 1, function () {
-	equal($.cookie('c', ' v', { raw: true }).split('=')[1],
-		' v', 'should not encode');
+	equal($.cookie('c', ' v', { raw: true }).split('=')[1], transform(' v', true), 'should not encode');
 });
 
 test('defaults', 1, function () {
 	$.cookie.defaults.raw = true;
-	equal($.cookie('c', ' v').split('=')[1], ' v', 'should use raw from defaults');
+	equal($.cookie('c', ' v').split('=')[1], transform(' v', true), 'should use raw from defaults');
 });
 
 
