@@ -23,7 +23,7 @@
 	$.cookie = function (key, value, options) {
 
 		// key and at least value given, set cookie...
-		if (value !== undefined && !/Object/.test(Object.prototype.toString.call(value))) {
+		if (value !== undefined && (JSON !== undefined || !/Object/.test(Object.prototype.toString.call(value))) ) {
 			options = $.extend({}, $.cookie.defaults, options);
 
 			if (value === null) {
@@ -35,7 +35,7 @@
 				t.setDate(t.getDate() + days);
 			}
 
-			value = String(value);
+			value = JSON !== undefined ? JSON.stringify(value) : String(value);
 
 			return (document.cookie = [
 				encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
@@ -52,7 +52,8 @@
 		var cookies = document.cookie.split('; ');
 		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
 			if (decode(parts.shift()) === key) {
-				return decode(parts.join('='));
+				var cookie = decode(parts.join('='));
+				return JSON !== undefined ? JSON.parse(cookie) : cookie;
 			}
 		}
 
