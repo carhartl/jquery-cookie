@@ -9,7 +9,7 @@ var before = {
 	}
 };
 
-//Uncomment to simulate older browsers
+//Uncomment to simulate older browsers, object test will fail.
 //JSON = undefined;
 
 //When JSON exists, it will store the values JSON encoded.
@@ -173,3 +173,17 @@ test('passing options', 2, function() {
 
 	$.cookie = oldCookie;
 });
+
+test('setting object value', 4, function() {
+	document.cookie = '';
+	$.cookie('c', {foo: {bar: 42}, bas: 'some text'});
+
+	var c = $.cookie('c');
+	notEqual(c, undefined);
+	notEqual(c, null);
+	strictEqual(c.foo.bar, 42);
+	strictEqual(c.bas, 'some text');
+});
+
+
+
