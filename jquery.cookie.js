@@ -27,7 +27,7 @@
 		return decodeURIComponent(s.replace(pluses, ' '));
 	}
 
-	var config = $.cookie = function(key, value, options) {
+	var config = $.cookie = function (key, value, options) {
 
 			// write
 			if (value !== undefined) {
