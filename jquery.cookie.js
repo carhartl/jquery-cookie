@@ -52,7 +52,7 @@
 		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
 			if (decode(parts.shift()) === key) {
 				var cookie = decode(parts.join('='));
-				return config.json ? JSON.parse(cookie) : cookie;
+				return config.json ? $.parseJSON(cookie) : cookie;
 			}
 		}
 
