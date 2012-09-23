@@ -178,3 +178,39 @@ test('with options', 2, function() {
 
 	$.cookie = oldCookie;
 });
+
+
+// Load a second copy of jquery.cookie into a fake environment
+// so we can test specific values of document.cookie.
+// This works ok for read tests.  Write/remove tests
+// could also be added if we used an ES5 setter.
+
+var fakeJQuery = { };
+var fakeDocument = { cookie: '' };
+
+$.ajax({
+	url:      'jquery.cookie.js',
+	dataType: 'text',
+	error:    function(jqXHR, textStatus, errorThrown) {
+			  alert('Error opening jquery.cookie.js: '
+			         + errorThrown ? errorThrown : textStatus);
+		},
+	success:  function(fakeScript) {
+			var $ = fakeJQuery;
+			var jQuery = fakeJQuery;
+			var document = fakeDocument;
+
+			eval(fakeScript);
+		},
+	async:    false
+});
+
+
+module('fakeread');
+
+// IE sometimes fails and inserts bogus empty values,
+// https://github.com/carhartl/jquery-cookie/issues/88
+test('with empty value in document.cookies', 1, function () {
+	fakeDocument.cookie = 'a=a; ; c=v';
+	equal(fakeJQuery.cookie('c'), 'v', 'should return value');
+});
