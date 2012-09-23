@@ -2,7 +2,10 @@ var before = {
 	setup: function () {
 		cookies = document.cookie.split('; ')
 		for (var i = 0, c; (c = (cookies)[i]) && (c = c.split('=')[0]); i++) {
-			document.cookie = c + '=; expires=' + new Date(0).toUTCString();
+			c += '=; expires=' + new Date(0).toUTCString();
+			document.cookie = c;
+			document.cookie = c + '; path=/path1';
+			document.cookie = c + '; path=/path2';
 		}
 
 		$.cookie.defaults = {};
@@ -116,9 +119,9 @@ test('return value', 1, function () {
 });
 
 test('defaults', 2, function () {
-	$.cookie.defaults.path = '/';
-	ok($.cookie('c', 'v').match(/path=\//), 'should use options from defaults');
-	ok($.cookie('c', 'v', { path: '/foo' }).match(/path=\/foo/), 'options argument has precedence');
+	$.cookie.defaults.path = '/path1';
+	ok($.cookie('c', 'v').match(/path=\/path1/), 'should use options from defaults');
+	ok($.cookie('c', 'v', { path: '/path2' }).match(/path=\/path2/), 'options argument has precedence');
 });
 
 test('raw: true', 1, function () {
