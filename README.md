@@ -25,7 +25,7 @@ Create expiring cookie, valid across entire site:
 Read cookie:
 
     $.cookie('the_cookie'); // => "the_value"
-    $.cookie('the_cookie', { raw: true }); // => "the_value" not URL decoded
+    $.cookie('the_cookie', undefined, { raw: true }); // => "the_value" not URL decoded
     $.cookie('not_existing'); // => null
 
 Delete cookie:
