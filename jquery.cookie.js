@@ -34,7 +34,7 @@
 				var days = options.expires, t = options.expires = new Date();
 				t.setDate(t.getDate() + days);
 			}
-
+			
 			value = config.json ? JSON.stringify(value) : String(value);
 
 			return (document.cookie = [
@@ -59,7 +59,7 @@
 		return null;
 	};
 
-	config.defaults = {};
+	config.defaults = {path: document.location.pathname};
 
 	$.removeCookie = function (key, options) {
 		if ($.cookie(key) !== null) {
