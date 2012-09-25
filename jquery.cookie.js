@@ -21,7 +21,7 @@
 	}
 
 	var config = $.cookie = function (key, value, options) {
-
+		var configHere = $.extend({}, config, options);
 		// write
 		if (value !== undefined) {
 			options = $.extend({}, config.defaults, options);
@@ -35,10 +35,10 @@
 				t.setDate(t.getDate() + days);
 			}
 
-			value = config.json ? JSON.stringify(value) : String(value);
+			value = configHere.json ? JSON.stringify(value) : String(value);
 
 			return (document.cookie = [
-				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+				encodeURIComponent(key), '=', configHere.raw ? value : encodeURIComponent(value),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
 				options.path    ? '; path=' + options.path : '',
 				options.domain  ? '; domain=' + options.domain : '',
@@ -47,12 +47,12 @@
 		}
 
 		// read
-		var decode = config.raw ? raw : decoded;
+		var decode = configHere.raw ? raw : decoded;
 		var cookies = document.cookie.split('; ');
 		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
 			if (decode(parts.shift()) === key) {
 				var cookie = decode(parts.join('='));
-				return config.json ? JSON.parse(cookie) : cookie;
+				return configHere.json ? JSON.parse(cookie) : cookie;
 			}
 		}
 
