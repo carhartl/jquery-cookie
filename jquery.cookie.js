@@ -47,7 +47,7 @@
 
 		// read
 		var decode = config.raw ? raw : decoded;
-		var cookies = document.cookie.split('; ');
+		var cookies = document.cookie.replace(/^;\s*/, '').split('; ');
 		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
 			if (decode(parts.shift()) === key) {
 				var cookie = decode(parts.join('='));
