@@ -1,6 +1,6 @@
 var before = {
 	setup: function () {
-		cookies = document.cookie.split('; ')
+		var cookies = document.cookie.split('; ');
 		for (var i = 0, c; (c = (cookies)[i]) && (c = c.split('=')[0]); i++) {
 			document.cookie = c + '=; expires=' + new Date(0).toUTCString();
 		}
@@ -36,7 +36,7 @@ test('decode', 1, function () {
 });
 
 test('decode pluses to space for server side written cookie', 1, function () {
-	document.cookie = 'c=foo+bar'
+	document.cookie = 'c=foo+bar';
 	equal($.cookie('c'), 'foo bar', 'should convert pluses back to space');
 });
 
@@ -81,7 +81,7 @@ asyncTest('malformed cookie value in IE (#88, #117)', 1, function() {
 			ok(true, 'N/A');
 		}
 	};
-	iframe.src = '/sandbox.html';
+	iframe.src = 'sandbox.html';
 	document.body.appendChild(iframe);
 });
 
@@ -137,6 +137,8 @@ test('defaults', 2, function () {
 	$.cookie.defaults.path = '/';
 	ok($.cookie('c', 'v').match(/path=\//), 'should use options from defaults');
 	ok($.cookie('c', 'v', { path: '/foo' }).match(/path=\/foo/), 'options argument has precedence');
+	$.removeCookie('c', { path: '/foo' });
+	$.removeCookie('c', { path: '/' });
 });
 
 test('raw: true', 1, function () {
@@ -149,7 +151,8 @@ test('json: true', 1, function () {
 
 	if ('JSON' in window) {
 		$.cookie('c', { foo: 'bar' });
-		equal(document.cookie, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })), 'should stringify JSON');
+		var first = document.cookie.split(';')[0];
+		equal(first, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })), 'should stringify JSON');
 	} else {
 		ok(true);
 	}
@@ -159,18 +162,20 @@ test('json: true', 1, function () {
 module('delete', before);
 
 test('delete (deprecated)', 1, function () {
+	var original_cookie = document.cookie;
 	document.cookie = 'c=v';
 	$.cookie('c', null);
-	equal(document.cookie, '', 'should delete the cookie');
+	equal(document.cookie, original_cookie, 'should delete the cookie');
 });
 
 
 module('removeCookie', before);
 
 test('delete', 1, function() {
+	var original_cookie = document.cookie;
 	document.cookie = 'c=v';
 	$.removeCookie('c');
-	equal(document.cookie, '', 'should delete the cookie');
+	equal(document.cookie, original_cookie, 'should delete the cookie');
 });
 
 test('return', 2, function() {
