@@ -45,6 +45,16 @@ test('[] used in name', 1, function () {
 	equal($.cookie('c[999]'), 'foo', 'should return value');
 });
 
+test('no arguments', 3, function () {
+	document.cookie = 'x=y';
+	var count = document.cookie.split(';').length;
+	var cookies = $.cookie();
+	equal(typeof cookies, 'object', 'should return object');
+	var found = 0; for (var key in cookies) found++;
+	equal(found, count, 'should find all cookies');
+	equal(cookies.x, 'y', 'should decode cookies');
+});
+
 test('raw: true', 2, function () {
 	$.cookie.raw = true;
 
@@ -106,6 +116,27 @@ test('value "[object Object]"', 1, function () {
 test('number', 1, function () {
 	$.cookie('c', 1234);
 	equal($.cookie('c'), '1234', 'should write value');
+});
+
+test('editing cookies by object', 4, function() {
+	var edits = { a: 'a', c: null };
+	var result = $.cookie(edits);
+	ok(result === edits, 'should return the object instance passed');
+	deepEqual(result, { a: 'a', c: null }, 'should return the object unmodified');
+	equal($.cookie('a'), 'a', 'should set all given cookies');
+	equal($.cookie('c'), null, 'should remove nulled cookies');
+});
+
+test('editing cookies by object with options', 4, function() {
+	$.cookie('a', 'something');
+	$.cookie('c', 'something');
+	var edits = { a: null, c: 'c' };
+	var options = { expires: -1 };
+	var result = $.cookie(edits, options);
+	ok(result === edits, 'should return the object instance passed');
+	deepEqual(result, { a: null, c: 'c' }, 'should return the object unmodified');
+	equal($.cookie('a'), null, 'should use the options object for all cookies');
+	equal($.cookie('c'), null, 'should use the options object for all cookies');
 });
 
 test('expires option as days from now', 1, function() {
