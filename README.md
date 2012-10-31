@@ -20,6 +20,10 @@ Create session cookie:
 Create expiring cookie, 7 days from then:
 
     $.cookie('the_cookie', 'the_value', { expires: 7 });
+    
+Create expiring cookie, 1 day, 4 hours and 2 minutes from then:
+
+    $.cookie('the_cookie', 'the_value', { expires: {days: 1, hours: 4, minutes: 2} });    
 
 Create expiring cookie, valid across entire site:
 

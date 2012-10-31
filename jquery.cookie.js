@@ -33,6 +33,23 @@
 				var days = options.expires, t = options.expires = new Date();
 				t.setDate(t.getDate() + days);
 			}
+			
+			if (typeof options.expires === 'object') {
+				
+				console.log(options.expires);
+				
+				var expireOption = options.expires, t = options.expires = new Date();
+				
+				if(typeof expireOption.days === 'number')
+					t.setDate(t.getDate() + expireOption.days);
+				
+				if(typeof expireOption.hours === 'number')
+					t.setHours(t.getHours() + expireOption.hours);
+				
+				if(typeof expireOption.minutes === 'number')
+					t.setMinutes(t.getMinutes() + expireOption.minutes);
+				
+			}				
 
 			value = config.json ? JSON.stringify(value) : String(value);
 
