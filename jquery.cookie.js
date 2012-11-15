@@ -21,6 +21,14 @@
 
 	var config = $.cookie = function (key, value, options) {
 
+		if (typeof key === 'object') {
+			for (var name in key) {
+				if (!key.hasOwnProperty(name)) continue;
+				$.cookie(name, key[name], value); // "options" is optional 2nd arg here
+			}
+			return key;
+		}
+
 		// write
 		if (value !== undefined) {
 			options = $.extend({}, config.defaults, options);
@@ -46,17 +54,26 @@
 		}
 
 		// read
+		var all = arguments.length ? null : {};
 		var decode = config.raw ? raw : decoded;
 		var cookies = document.cookie.split('; ');
 		for (var i = 0, l = cookies.length; i < l; i++) {
 			var parts = cookies[i].split('=');
-			if (decode(parts.shift()) === key) {
+			if ((name = decode(parts.shift())) === key || all) {
 				var cookie = decode(parts.join('='));
-				return config.json ? JSON.parse(cookie) : cookie;
+				if (config.json) {
+					cookie = JSON.parse(cookie);
+				}
+				if (all) {
+					all[name] = cookie;
+				}
+				else {
+					return cookie;
+				}
 			}
 		}
 
-		return null;
+		return all;
 	};
 
 	config.defaults = {};

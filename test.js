@@ -1,6 +1,6 @@
 var before = {
 	setup: function () {
-		cookies = document.cookie.split('; ')
+		var cookies = document.cookie.split('; ');
 		for (var i = 0, c; (c = (cookies)[i]) && (c = c.split('=')[0]); i++) {
 			document.cookie = c + '=; expires=' + new Date(0).toUTCString();
 		}
@@ -36,13 +36,23 @@ test('decode', 1, function () {
 });
 
 test('decode pluses to space for server side written cookie', 1, function () {
-	document.cookie = 'c=foo+bar'
+	document.cookie = 'c=foo+bar';
 	equal($.cookie('c'), 'foo bar', 'should convert pluses back to space');
 });
 
 test('[] used in name', 1, function () {
 	document.cookie = 'c[999]=foo';
 	equal($.cookie('c[999]'), 'foo', 'should return value');
+});
+
+test('no arguments', 3, function () {
+	document.cookie = 'x=y';
+	var count = document.cookie.split(';').length;
+	var cookies = $.cookie();
+	equal(typeof cookies, 'object', 'should return object');
+	var found = 0; for (var key in cookies) found++;
+	equal(found, count, 'should find all cookies');
+	equal(cookies.x, 'y', 'should decode cookies');
 });
 
 test('raw: true', 2, function () {
@@ -81,7 +91,7 @@ asyncTest('malformed cookie value in IE (#88, #117)', 1, function() {
 			ok(true, 'N/A');
 		}
 	};
-	iframe.src = '/sandbox.html';
+	iframe.src = 'sandbox.html';
 	document.body.appendChild(iframe);
 });
 
@@ -106,6 +116,27 @@ test('value "[object Object]"', 1, function () {
 test('number', 1, function () {
 	$.cookie('c', 1234);
 	equal($.cookie('c'), '1234', 'should write value');
+});
+
+test('editing cookies by object', 4, function() {
+	var edits = { a: 'a', c: null };
+	var result = $.cookie(edits);
+	ok(result === edits, 'should return the object instance passed');
+	deepEqual(result, { a: 'a', c: null }, 'should return the object unmodified');
+	equal($.cookie('a'), 'a', 'should set all given cookies');
+	equal($.cookie('c'), null, 'should remove nulled cookies');
+});
+
+test('editing cookies by object with options', 4, function() {
+	$.cookie('a', 'something');
+	$.cookie('c', 'something');
+	var edits = { a: null, c: 'c' };
+	var options = { expires: -1 };
+	var result = $.cookie(edits, options);
+	ok(result === edits, 'should return the object instance passed');
+	deepEqual(result, { a: null, c: 'c' }, 'should return the object unmodified');
+	equal($.cookie('a'), null, 'should use the options object for all cookies');
+	equal($.cookie('c'), null, 'should use the options object for all cookies');
 });
 
 test('expires option as days from now', 1, function() {
@@ -137,6 +168,8 @@ test('defaults', 2, function () {
 	$.cookie.defaults.path = '/';
 	ok($.cookie('c', 'v').match(/path=\//), 'should use options from defaults');
 	ok($.cookie('c', 'v', { path: '/foo' }).match(/path=\/foo/), 'options argument has precedence');
+	$.removeCookie('c', { path: '/foo' });
+	$.removeCookie('c', { path: '/' });
 });
 
 test('raw: true', 1, function () {
@@ -149,7 +182,8 @@ test('json: true', 1, function () {
 
 	if ('JSON' in window) {
 		$.cookie('c', { foo: 'bar' });
-		equal(document.cookie, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })), 'should stringify JSON');
+		var first = document.cookie.split(';')[0];
+		equal(first, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })), 'should stringify JSON');
 	} else {
 		ok(true);
 	}
@@ -159,18 +193,20 @@ test('json: true', 1, function () {
 module('delete', before);
 
 test('delete (deprecated)', 1, function () {
+	var original_cookie = document.cookie;
 	document.cookie = 'c=v';
 	$.cookie('c', null);
-	equal(document.cookie, '', 'should delete the cookie');
+	equal(document.cookie, original_cookie, 'should delete the cookie');
 });
 
 
 module('removeCookie', before);
 
 test('delete', 1, function() {
+	var original_cookie = document.cookie;
 	document.cookie = 'c=v';
 	$.removeCookie('c');
-	equal(document.cookie, '', 'should delete the cookie');
+	equal(document.cookie, original_cookie, 'should delete the cookie');
 });
 
 test('return', 2, function() {
