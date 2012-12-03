@@ -45,14 +45,26 @@
 			].join(''));
 		}
 
-		// read
 		var decode = config.raw ? raw : decoded;
 		var cookies = document.cookie.split('; ');
-		for (var i = 0, l = cookies.length; i < l; i++) {
-			var parts = cookies[i].split('=');
-			if (decode(parts.shift()) === key) {
-				var cookie = decode(parts.join('='));
-				return config.json ? JSON.parse(cookie) : cookie;
+		
+		// list
+		if (key == undefined) {
+			var cookieNames = [];
+			for (var i = 0, l = cookies.length; i < l; i++) {
+				var parts = cookies[i].split('=');
+				cookieNames.push(decode(parts.shift()));
+			}
+			return cookieNames;
+		}
+		else {
+			// read
+			for (var i = 0, l = cookies.length; i < l; i++) {
+				var parts = cookies[i].split('=');
+				if (decode(parts.shift()) === key) {
+					var cookie = decode(parts.join('='));
+					return config.json ? JSON.parse(cookie) : cookie;
+				}
 			}
 		}
 
