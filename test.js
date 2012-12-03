@@ -81,7 +81,7 @@ asyncTest('malformed cookie value in IE (#88, #117)', 1, function() {
 			ok(true, 'N/A');
 		}
 	};
-	iframe.src = '/sandbox.html';
+	iframe.src = 'sandbox.html';
 	document.body.appendChild(iframe);
 });
 
@@ -196,4 +196,32 @@ test('with options', 2, function() {
 	$.removeCookie('c', { foo: 'bar' });
 
 	$.cookie = oldCookie;
+});
+
+module('list', before);
+
+test('empty', 2, function () {
+	document.cookie = '';
+	
+	var keys = $.cookie();
+	ok($.isArray(keys), 'must be array');
+	ok(keys.length, 'must be empty array');
+});
+
+test('one', 3, function () {
+	document.cookie = '';
+	$.cookie('c', 'v');
+	var keys = $.cookie();
+	ok($.isArray(keys), 'must be array');
+	equal(keys.length, 1, 'must have 1 element');
+	equal(keys.join(','), 'c', 'elements must equal');
+});
+
+test('two', 3, function () {
+	$.cookie('c', 'v');
+	$.cookie('a', 'b');
+	var keys = $.cookie();
+	ok($.isArray(keys), 'must be array');
+	equal(keys.length, 2, 'must have 2 elements');
+	equal(keys.join(','), 'c,a', 'elements must equal');
 });
