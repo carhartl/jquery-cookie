@@ -30,6 +30,10 @@ Read cookie:
     $.cookie('the_cookie'); // => "the_value"
     $.cookie('not_existing'); // => null
 
+Get all cookie names:
+
+    $.cookie(); // => ["the_cookie", ...]
+
 Delete cookie:
 
     // Returns true when cookie was found, false when no cookie was found...
