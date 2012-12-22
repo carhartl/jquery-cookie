@@ -16,6 +16,10 @@ in Internet Explorer on Windows 7 for instance (because of the wrong MIME type).
 Create session cookie:
 
     $.cookie('the_cookie', 'the_value');
+    
+Create expiring cookie, half a day from then:
+
+    $.cookie('the_cookie', 'the_value', { expires: 0.5 });
 
 Create expiring cookie, 7 days from then:
 

@@ -31,7 +31,7 @@
 
 			if (typeof options.expires === 'number') {
 				var days = options.expires, t = options.expires = new Date();
-				t.setDate(t.getDate() + days);
+				t.setTime(t.getTime() + days*86400000); //24*60*60*1000 = 86400000 = number of milliseconds in a day
 			}
 
 			value = config.json ? JSON.stringify(value) : String(value);
