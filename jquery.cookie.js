@@ -31,7 +31,7 @@
 
 			if (typeof options.expires === 'number') {
 				var days = options.expires, t = options.expires = new Date();
-				t.setDate(t.getDate() + days);
+				t.setTime(t.getTime() + options.expires*86400000);
 			}
 
 			value = config.json ? JSON.stringify(value) : String(value);
