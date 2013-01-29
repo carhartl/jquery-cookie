@@ -87,7 +87,7 @@ test('json: true - suppress invalid cookies exception', function() {
 	
 	if('JSON' in window) {
 		document.cookie = 'c=v';
-		equal($.cookie('c'), null, 'Cookie should be null and no exception should occur');
+		strictEqual($.cookie('c'), undefined, 'Cookie should be null and no exception should occur');
 	} else {
 		ok(true);
 	}
