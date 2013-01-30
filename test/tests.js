@@ -82,6 +82,17 @@ test('not existing with json = true', function () {
 	}
 });
 
+test('json: true - suppress invalid cookies exception', function() {
+	$.cookie.json = true;
+	
+	if('JSON' in window) {
+		document.cookie = 'c=v';
+		strictEqual($.cookie('c'), undefined, 'Cookie should be null and no exception should occur');
+	} else {
+		ok(true);
+	}
+});
+
 asyncTest('malformed cookie value in IE (#88, #117)', function() {
 	expect(1);
 	// Sandbox in an iframe so that we can poke around with document.cookie.
