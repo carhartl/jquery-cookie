@@ -22,7 +22,13 @@
 	}
 
 	function decoded(s) {
-		return decodeURIComponent(s.replace(pluses, ' '));
+		s = s.replace(pluses, ' ');
+		try {
+			return decodeURIComponent(s);
+		} catch(er) {
+			// handle the "URIError: URI malformed"
+			return unescape(s);
+		}
 	}
 
 	function converted(s) {

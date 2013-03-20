@@ -251,3 +251,9 @@ test('[] used in name', function () {
 	$.removeCookie('c[1]');
 	strictEqual(document.cookie, '', 'delete the cookie');
 });
+
+test('value can not been decodeURIComponented ', function () {
+	expect(1);
+	document.cookie = 'c=%u5317%u4eac';
+	strictEqual($.cookie('c'), '北京', 'should not throw URIError: URI malformed');
+});
