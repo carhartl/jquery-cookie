@@ -2,6 +2,7 @@
 
 - Report issues, questions, feature requests on [GitHub Issues](https://github.com/carhartl/jquery-cookie/issues);
 - If reporting a bug, please add a [Short, Self Contained, Correct, Example](http://sscce.org/).
+
 ##Pull requests
 - Create a new branch outside the master for every separate change you make.
 - Create a test case if you are fixing a bug or implementing an important feature;
