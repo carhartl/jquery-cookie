@@ -1,3 +1,12 @@
+##Issues
+
+- Report issues, questions, feature requests on [GitHub Issues](https://github.com/carhartl/jquery-cookie/issues);
+- If reporting a bug, please add a [Short, Self Contained, Correct, Example](http://sscce.org/).
+##Pull requests
+- Create a new branch outside the master for every separate change you make.
+- Create a test case if you are fixing a bug or implementing an important feature;
+- Make sure the build runs successfully;
+
 ## Development
 
 ###Tools
@@ -36,15 +45,3 @@ Open the following URL in a browser:
     $ open http://0.0.0.0:8124/test/index.html
 
 _Note: we recommend cleaning all the browser cookies before running the tests, that can avoid false positive failures._
-
-## Contribution
-
-###Issues
-
-- Report issues, questions, feature requests on [GitHub Issues](https://github.com/carhartl/jquery-cookie/issues);
-- If reporting a bug, please add a [Short, Self Contained, Correct, Example](http://sscce.org/).
-
-###Pull requests
-- Create a new branch outside the master for every separate change you make.
-- Create a test case if you are fixing a bug or implementing an important feature;
-- Make sure the build runs successfully;
