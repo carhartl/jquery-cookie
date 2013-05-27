@@ -36,7 +36,9 @@
 	}
 
 	var config = $.cookie = function (key, value, options) {
-
+		if(value === null){
+			$.removeCookie(key, options);
+		}
 		// write
 		if (value !== undefined) {
 			options = $.extend({}, config.defaults, options);
