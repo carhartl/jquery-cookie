@@ -1,21 +1,21 @@
 ##Issues
 
-- Report issues, questions, feature requests on [GitHub Issues](https://github.com/carhartl/jquery-cookie/issues);
-- If reporting a bug, please add a [Short, Self Contained, Correct, Example](http://sscce.org/).
+- Report issues, questions, feature requests on [GitHub Issues](https://github.com/carhartl/jquery-cookie/issues).
+- If reporting a bug, please add a [simplified example](http://sscce.org/).
 
 ##Pull requests
-- Create a new branch outside the master for every separate change you make.
-- Create a test case if you are fixing a bug or implementing an important feature;
-- Make sure the build runs successfully;
+- Create a new topic branch for every separate change you make.
+- Create a test case if you are fixing a bug or implementing an important feature.
+- Make sure the build runs successfully.
 
 ## Development
 
 ###Tools
 We use the following tools for development:
 
-- [Qunit](http://qunitjs.com/) for tests;
-- [NodeJS](http://nodejs.org/download/) required to run grunt and the test server only;
-- [Grunt](http://gruntjs.com/getting-started) for task management;
+- [Qunit](http://qunitjs.com/) for tests.
+- [NodeJS](http://nodejs.org/download/) required to run grunt and the test server only.
+- [Grunt](http://gruntjs.com/getting-started) for task management.
 
 ###Getting started 
 Install [NodeJS](http://nodejs.org/).  
