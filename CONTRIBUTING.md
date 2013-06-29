@@ -46,3 +46,8 @@ Open the following URL in a browser:
     $ open http://0.0.0.0:8124/test/index.html
 
 _Note: we recommend cleaning all the browser cookies before running the tests, that can avoid false positive failures._
+
+###Automatic build
+You can build automatically after a file change using the following command:
+
+    $ grunt watch
