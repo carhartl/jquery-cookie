@@ -82,14 +82,14 @@ test('not existing with json = true', function () {
 	}
 });
 
-test('invalid JSON string with json = true', function () {
+test('string with json = true', function () {
 	expect(1);
 
 
 	if ('JSON' in window) {
 		$.cookie.json = true;
 		$.cookie('c', 'v');
-		strictEqual($.cookie('c'), undefined, "won't throw exception, returns undefined");
+		strictEqual($.cookie('c'), 'v', "won't throw exception, returns unquoted string");
 	} else {
 		ok(true);
 	}
