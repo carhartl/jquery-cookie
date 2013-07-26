@@ -12,6 +12,10 @@ HEAD
 - Renamed bower package definition (component.json -> bower.json) for usage
   with up-to-date bower.
 
+1.3.2
+-----
+- Updated `bower.json` to ignore unnecessary files when installing.
+
 1.3.1
 -----
 - Fixed issue where it was no longer possible to check for an arbitrary cookie,
