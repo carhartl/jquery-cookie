@@ -98,6 +98,29 @@ Define the domain where the cookie is valid. Default: domain of page where the c
 
 If true, the cookie transmission requires a secure protocol (https). Default: `false`.
 
+## Converters
+
+Provide a conversion function as optional last argument for reading and writing,
+so that values can be changed to a different representation easily on the fly.
+This is useful for parsing numbers (or maybe booleans or dates) when reading:
+
+```javascript
+$.cookie('foo', '42');
+$.cookie('foo', Number); // => 42
+```
+
+Or for JSON serialization and parsing:
+
+```javascript
+$.cookie('foo', { bar: 'baz' }, JSON.stringify);
+$.cookie('foo', JSON.parse); // => {bar: "baz"}
+
+// With cookie attributes
+$.cookie('foo', { bar: 'baz' }, { path: '/' }, JSON.stringify);
+```
+
+You can of course write your own arbitrary conversion functions.
+
 ## Contributing
 
 Check out the [Contributing Guidelines](CONTRIBUTING.md)

@@ -17,23 +17,41 @@
 
 	var pluses = /\+/g;
 
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
 	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value, converter) {
+		value = config.json ? JSON.stringify(value) : value;
+
+		return encode($.isFunction(converter) ? converter(value) : value);
+	}
+
+	function parseCookieValue(s, converter) {
 		if (config.raw) {
 			return s;
 		}
-		try {
-			// If we can't decode the cookie, ignore it, it's unusable.
-			return decodeURIComponent(s.replace(pluses, ' '));
-		} catch(e) {}
-	}
 
-	function decodeAndParse(s) {
 		if (s.indexOf('"') === 0) {
 			// This is a quoted cookie as according to RFC2068, unescape...
 			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
 		}
 
-		s = decode(s);
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+		} catch(e) {
+			return;
+		}
+
+		if ($.isFunction(converter)) {
+			s = converter(s);
+		}
 
 		try {
 			// If we can't parse the cookie, ignore it, it's unusable.
@@ -41,10 +59,15 @@
 		} catch(e) {}
 	}
 
-	var config = $.cookie = function (key, value, options) {
+	var config = $.cookie = function (key, value, options, converter) {
 
 		// Write
-		if (value !== undefined) {
+		if (value !== undefined && !$.isFunction(value)) {
+			if ($.isFunction(options)) {
+				converter = options;
+				options = {};
+			}
+
 			options = $.extend({}, config.defaults, options);
 
 			if (typeof options.expires === 'number') {
@@ -52,12 +75,8 @@
 				t.setDate(t.getDate() + days);
 			}
 
-			value = config.json ? JSON.stringify(value) : String(value);
-
 			return (document.cookie = [
-				config.raw ? key : encodeURIComponent(key),
-				'=',
-				config.raw ? value : encodeURIComponent(value),
+				encode(key), '=', stringifyCookieValue(value, converter),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
 				options.path    ? '; path=' + options.path : '',
 				options.domain  ? '; domain=' + options.domain : '',
@@ -80,12 +99,13 @@
 			var cookie = parts.join('=');
 
 			if (key && key === name) {
-				result = decodeAndParse(cookie);
+				// If second argument (value) is a function it's a converter...
+				result = parseCookieValue(cookie, value);
 				break;
 			}
 
 			// Prevent storing a cookie that we couldn't decode.
-			if (!key && (cookie = decodeAndParse(cookie)) !== undefined) {
+			if (!key && (cookie = parseCookieValue(cookie)) !== undefined) {
 				result[name] = cookie;
 			}
 		}

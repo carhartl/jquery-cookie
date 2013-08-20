@@ -65,7 +65,7 @@ test('json = true', function () {
 	if ('JSON' in window) {
 		$.cookie.json = true;
 		$.cookie('c', { foo: 'bar' });
-		deepEqual($.cookie('c'), { foo: 'bar'}, 'should parse JSON');
+		deepEqual($.cookie('c'), { foo: 'bar' }, 'should parse JSON');
 	} else {
 		ok(true);
 	}
@@ -285,3 +285,41 @@ test('[] used in name', function () {
 	$.removeCookie('c[1]');
 	strictEqual(document.cookie, '', 'delete the cookie');
 });
+
+
+module('conversion', lifecycle);
+
+test('write converter', function() {
+	expect(1);
+	$.cookie('c', 'v', function(value) { return value + 'foo'; });
+	strictEqual($.cookie('c'), 'vfoo', 'converts given value before writing');
+});
+
+test('using JSON.stringify', function() {
+	expect(1);
+
+	if ('JSON' in window) {
+		$.cookie('c', { foo: 'bar' }, JSON.stringify);
+		strictEqual($.cookie('c'), '{"foo":"bar"}', 'stringifies object');
+	} else {
+		ok(true);
+	}
+});
+
+test('read converter', function() {
+	expect(1);
+	$.cookie('c', '1');
+	strictEqual($.cookie('c', Number), 1, 'converts read value');
+});
+
+test('using JSON.parse', function() {
+	expect(1);
+
+	if ('JSON' in window) {
+		$.cookie('c', '{"foo":"bar"}');
+		deepEqual($.cookie('c', JSON.parse), { foo: 'bar' }, 'retrieves object');
+	} else {
+		ok(true);
+	}
+});
+
