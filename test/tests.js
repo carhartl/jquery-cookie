@@ -16,6 +16,12 @@ test('simple value', function () {
 	strictEqual($.cookie('c'), 'v', 'should return value');
 });
 
+test('Invalid encoding', function () {
+	expect(1);
+	document.cookie = 'c=100%';
+	strictEqual($.cookie('c'), '100%', 'should return value');
+});
+
 test('empty value', function () {
 	expect(1);
 	// IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, which
