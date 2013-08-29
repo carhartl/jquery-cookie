@@ -74,7 +74,7 @@
 				break;
 			}
 
-			if (!key) {
+			if (!key && name) {
 				result[name] = decodeAndParse(cookie);
 			}
 		}
