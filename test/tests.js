@@ -125,6 +125,8 @@ asyncTest('malformed cookie value in IE (#88, #117)', function() {
 });
 
 test('call without arguments', function() {
+	deepEqual($.cookie(), {}, 'should return empty object');
+	
 	$.cookie('c', 'v');
 	$.cookie('foo', 'bar');
 	deepEqual($.cookie(), {
