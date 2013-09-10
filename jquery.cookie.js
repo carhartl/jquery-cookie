@@ -21,7 +21,12 @@
 		if (config.raw) {
 			return s;
 		}
-		return decodeURIComponent(s.replace(pluses, ' '));
+		try {
+			return decodeURIComponent(s.replace(pluses, ' '));
+		} catch (error) {
+			// Malformed cookie?
+			return s;
+		}
 	}
 
 	function decodeAndParse(s) {
