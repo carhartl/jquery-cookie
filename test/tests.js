@@ -294,15 +294,3 @@ test('read converter', function() {
 	$.cookie('c', '1');
 	strictEqual($.cookie('c', Number), 1, 'converts read value');
 });
-
-test('using JSON.parse', function() {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie('c', '{"foo":"bar"}');
-		deepEqual($.cookie('c', JSON.parse), { foo: 'bar' }, 'retrieves object');
-	} else {
-		ok(true);
-	}
-});
-
