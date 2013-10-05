@@ -294,3 +294,10 @@ test('read converter', function() {
 	$.cookie('c', '1');
 	strictEqual($.cookie('c', Number), 1, 'converts read value');
 });
+
+test('read converter with raw = true', function() {
+	expect(1);
+	$.cookie.raw = true;
+	$.cookie('c', '1');
+	strictEqual($.cookie('c', Number), 1, 'does not decode, but converts read value');
+});

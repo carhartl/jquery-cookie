@@ -29,11 +29,7 @@
 		return encode(config.json ? JSON.stringify(value) : String(value));
 	}
 
-	function parseCookieValue(s, converter) {
-		if (config.raw) {
-			return s;
-		}
-
+	function parseCookieValue(s) {
 		if (s.indexOf('"') === 0) {
 			// This is a quoted cookie as according to RFC2068, unescape...
 			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
@@ -47,15 +43,15 @@
 			return;
 		}
 
-		// TODO allow raw + converter!
-		if ($.isFunction(converter)) {
-			s = converter(s);
-		}
-
 		try {
 			// If we can't parse the cookie, ignore it, it's unusable.
 			return config.json ? JSON.parse(s) : s;
 		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
 	}
 
 	var config = $.cookie = function (key, value, options) {
@@ -94,12 +90,12 @@
 
 			if (key && key === name) {
 				// If second argument (value) is a function it's a converter...
-				result = parseCookieValue(cookie, value);
+				result = read(cookie, value);
 				break;
 			}
 
 			// Prevent storing a cookie that we couldn't decode.
-			if (!key && (cookie = parseCookieValue(cookie)) !== undefined) {
+			if (!key && (cookie = read(cookie)) !== undefined) {
 				result[name] = cookie;
 			}
 		}
