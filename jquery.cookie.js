@@ -25,10 +25,8 @@
 		return config.raw ? s : decodeURIComponent(s);
 	}
 
-	function stringifyCookieValue(value, converter) {
-		value = config.json ? JSON.stringify(value) : value;
-
-		return encode($.isFunction(converter) ? converter(value) : value);
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
 	}
 
 	function parseCookieValue(s, converter) {
@@ -49,6 +47,7 @@
 			return;
 		}
 
+		// TODO allow raw + converter!
 		if ($.isFunction(converter)) {
 			s = converter(s);
 		}
@@ -59,15 +58,10 @@
 		} catch(e) {}
 	}
 
-	var config = $.cookie = function (key, value, options, converter) {
+	var config = $.cookie = function (key, value, options) {
 
 		// Write
 		if (value !== undefined && !$.isFunction(value)) {
-			if ($.isFunction(options)) {
-				converter = options;
-				options = {};
-			}
-
 			options = $.extend({}, config.defaults, options);
 
 			if (typeof options.expires === 'number') {
@@ -76,7 +70,7 @@
 			}
 
 			return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value, converter),
+				encode(key), '=', stringifyCookieValue(value),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
 				options.path    ? '; path=' + options.path : '',
 				options.domain  ? '; domain=' + options.domain : '',

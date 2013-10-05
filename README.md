@@ -118,26 +118,24 @@ If true, the cookie transmission requires a secure protocol (https). Default: `f
 
 ## Converters
 
-Provide a conversion function as optional last argument for reading and writing,
-so that values can be changed to a different representation easily on the fly.
-This is useful for parsing numbers (or maybe booleans or dates) when reading:
+Provide a conversion function as optional last argument for reading, in order to change the cookie's value 
+to a different representation on the fly.
+
+Example for parsing a value into a number:
 
 ```javascript
 $.cookie('foo', '42');
 $.cookie('foo', Number); // => 42
 ```
 
-Or for JSON serialization and parsing:
+Dealing with cookies that have been encoded using `escape` (3rd party cookies):
 
 ```javascript
-$.cookie('foo', { bar: 'baz' }, JSON.stringify);
-$.cookie('foo', JSON.parse); // => {bar: "baz"}
-
-// With cookie attributes
-$.cookie('foo', { bar: 'baz' }, { path: '/' }, JSON.stringify);
+$.cookie.raw = true;
+$.cookie('foo', unescape);
 ```
 
-You can of course write your own arbitrary conversion functions.
+You can pass an arbitrary conversion function.
 
 ## Contributing
 

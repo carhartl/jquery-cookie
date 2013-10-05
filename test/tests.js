@@ -289,23 +289,6 @@ test('[] used in name', function () {
 
 module('conversion', lifecycle);
 
-test('write converter', function() {
-	expect(1);
-	$.cookie('c', 'v', function(value) { return value + 'foo'; });
-	strictEqual($.cookie('c'), 'vfoo', 'converts given value before writing');
-});
-
-test('using JSON.stringify', function() {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie('c', { foo: 'bar' }, JSON.stringify);
-		strictEqual($.cookie('c'), '{"foo":"bar"}', 'stringifies object');
-	} else {
-		ok(true);
-	}
-});
-
 test('read converter', function() {
 	expect(1);
 	$.cookie('c', '1');
