@@ -56,10 +56,10 @@ Delete cookie:
 
 ```javascript
 // Returns true when cookie was found, false when no cookie was found...
-$.removeCookie('the_cookie');
+$.cookie('the_cookie', null);
 
 // Same path as when the cookie was written...
-$.removeCookie('the_cookie', { path: '/' });
+$.cookie('the_cookie', null, { path: '/' });
 ```
 
 *Note: when deleting a cookie, you must pass the exact same path, domain and secure options that were used to set the cookie, unless you're relying on the default options that is.*
