@@ -116,10 +116,12 @@
 
     $.removeAllCookies = function (options) {
         // If options in cookie, they must be the same than in options object
+        // Returns document.cookie if not empty or false
         $.each($.cookie(), function(key, value){
             try{
                 $.removeCookie(key, options);
             }catch(e){}
+            return document.cookie || false;
         });
     };
 
