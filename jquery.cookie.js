@@ -114,4 +114,13 @@
 		return !$.cookie(key);
 	};
 
+    $.removeAllCookies = function (options) {
+        // If options in cookie, they must be the same than in options object
+        $.each($.cookie(), function(key, value){
+            try{
+                $.removeCookie(key, options);
+            }catch(e){}
+        });
+    };
+
 }));
