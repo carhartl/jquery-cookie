@@ -323,3 +323,23 @@ test('read converter with raw = true', function() {
 	$.cookie('c', '1');
 	strictEqual($.cookie('c', Number), 1, 'does not decode, but converts read value');
 });
+
+module('removeAllCookies', lifecycle);
+test('remove all cookies without options', function() {
+    expect(1);
+    $.cookie('c', 'v');
+    $.cookie('foo', 'bar');
+    $.removeAllCookies();
+    strictEqual(document.cookie, '', 'All cookies are removed');
+});
+
+
+test('remove all cookies with same path', function() {
+    expect(1);
+	var options = { path: '/foo' };
+    $.cookie('c', 'v', options);
+    $.cookie('foo', 'bar', options);
+    $.removeAllCookies(options);
+
+    strictEqual(document.cookie, '', 'All cookies are removed');
+});
