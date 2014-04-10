@@ -1,13 +1,20 @@
-# jquery.cookie [![Build Status](https://travis-ci.org/carhartl/jquery-cookie.png?branch=master)](https://travis-ci.org/carhartl/jquery-cookie) [![Code Climate](https://codeclimate.com/github/carhartl/jquery-cookie.png)](https://codeclimate.com/github/carhartl/jquery-cookie)
-
 A simple, lightweight jQuery plugin for reading, writing and deleting cookies.
 
-**If you're viewing this at https://github.com/carhartl/jquery-cookie, you're reading the documentation for the master branch.
-[View documentation for the latest release (1.4.0).](https://github.com/carhartl/jquery-cookie/tree/v1.4.0)**
+This fork created by Dave Houlbrooke to add the ability to store Object and Array objects as JSON.
 
-## Build Status Matrix
+If this functionality makes it back into the trunk (pull request issued) this fork will no longer be required and will be removed.
 
-[![Selenium Test Status](https://saucelabs.com/browser-matrix/jquery-cookie.svg)](https://saucelabs.com/u/jquery-cookie)
+Full list of changes as follows:
+
+- Only works on actual {} Objects (and [] Arrays), not typeof "object". Tested with v.constructor === Object || v.constructor === Array
+
+- Detects JSON stored in cookies by looking for '[' or '{', using the same RegEx as jQuery's data() function.
+
+- If the JSON cookie can't be parsed it returns a string, to allow strings that have brackets like JSON but aren't, e.g. "[hello, this isn't JSON]"
+
+- Doesn't interfere with existing config.json, which can still be used to force JSON parsing.
+
+- Added tests for reading, saving, and raw URL encoded JSON.
 
 ## Installation
 
@@ -149,3 +156,4 @@ Check out the [Contributing Guidelines](CONTRIBUTING.md)
 ## Authors
 
 [Klaus Hartl](https://github.com/carhartl)
+[Dave Houlbrooke](https://github.com/davehoulbrooke)

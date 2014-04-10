@@ -6,6 +6,13 @@ HEAD
 
 - The expires option now interpretes fractions of numbers (e.g. days) correctly.
 
+1.5.0
+——
+
+- Support for passing Array and Object objects into $.cookie(), which are converted on the fly to JSON and saved
+
+- Support for retreiving cookie variables stored in JSON format, and converting them back to Array or Object objects
+
 1.4.0
 -----
 - Support for AMD.

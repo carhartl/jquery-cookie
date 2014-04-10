@@ -1,8 +1,9 @@
 /*!
- * jQuery Cookie Plugin v1.4.0
- * https://github.com/carhartl/jquery-cookie
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/dhoulb/jquery-cookie
  *
- * Copyright 2013 Klaus Hartl
+ * Copyright 2014 Klaus Hartl
+ * This fork modified by Dave Houlbrooke
  * Released under the MIT license
  */
 (function (factory) {

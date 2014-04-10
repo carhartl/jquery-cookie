@@ -1,16 +1,18 @@
-##Issues
+## Issues
 
-- Report issues or feature requests on [GitHub Issues](https://github.com/carhartl/jquery-cookie/issues).
+- Report issues or feature requests on [GitHub Issues](https://github.com/dhoulb/jquery-cookie/issues).
 - If reporting a bug, please add a [simplified example](http://sscce.org/).
 
-##Pull requests
+## Pull requests
+
 - Create a new topic branch for every separate change you make.
 - Create a test case if you are fixing a bug or implementing an important feature.
 - Make sure the build runs successfully.
 
 ## Development
 
-###Tools
+### Tools
+
 We use the following tools for development:
 
 - [Qunit](http://qunitjs.com/) for tests.
@@ -35,7 +37,8 @@ You should see a green message in the console:
 
     Done, without errors.
 
-###Tests
+### Tests
+
 You can also run the tests in the browser.  
 Start a test server from the project root:
 
@@ -47,7 +50,8 @@ Open the following URL in a browser:
 
 _Note: we recommend cleaning all the browser cookies before running the tests, that can avoid false positive failures._
 
-###Automatic build
+### Automatic build
+
 You can build automatically after a file change using the following command:
 
     $ grunt watch
