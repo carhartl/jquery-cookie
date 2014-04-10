@@ -18,7 +18,8 @@
 	}
 }(function ($) {
 
-	var pluses = /\+/g;
+	var pluses = /\+/g,
+		rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/; // Detect JSON objects in strings, from jQuery data()
 
 	function encode(s) {
 		return config.raw ? s : encodeURIComponent(s);
@@ -29,7 +30,12 @@
 	}
 
 	function stringifyCookieValue(value) {
-		return encode(config.json ? JSON.stringify(value) : String(value));
+		// If config.json is true, or the value is a real Object or Array, stringify it with JSON.stringify
+		if (config.json || value.constructor === Array || value.constructor === Object) {
+			return encode(JSON.stringify(value));
+		} else {
+			return encode(String(value));
+		}
 	}
 
 	function parseCookieValue(s) {
@@ -41,10 +47,28 @@
 		try {
 			// Replace server-side written pluses with spaces.
 			// If we can't decode the cookie, ignore it, it's unusable.
-			// If we can't parse the cookie, ignore it, it's unusable.
 			s = decodeURIComponent(s.replace(pluses, ' '));
-			return config.json ? JSON.parse(s) : s;
-		} catch(e) {}
+
+			// Parse with JSON.parse().
+			// If the string starts/ends with '[' or '{', parse it with JSON.parse()
+			if (config.json) {
+				// JSON mode. Always parse the string.
+				// If we can't parse the cookie, ignore it, it's unusable.
+				return JSON.parse(s);
+			} else if (rbrace.test(s)) {
+				// Detected JSON in the string.
+				try {
+					// Try to parse the string with JSON.
+					return JSON.parse(s);
+				} catch(e) {
+					// If we can't parse the cookie, return a regular stirng.
+					return s;
+				}
+			} else {
+				// No JSON.
+				return s;
+			}
+		} catch(e) { }
 	}
 
 	function read(s, converter) {
