@@ -67,6 +67,37 @@ $.removeCookie('the_cookie', { path: '/' });
 
 *Note: when deleting a cookie, you must pass the exact same path, domain and secure options that were used to set the cookie, unless you're relying on the default options that is.*
 
+## JSON
+
+Objects and arrays are transparently converted to/from JSON. This consistent with the jQuery `.data()` function:
+
+- *Read:* cookies starting with `{` or `[` will be parsed with `JSON.parse()` and returned as an object or array
+- *Write:* cookies that are native objects (`foo.constructor === Object`) or arrays (`foo.constructor === Array`) will be encoded as JSON with `JSON.stringify()` and stored as strings
+
+The cookie string must follow [valid JSON syntax](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example) including quoted property names. If the cookie isn't parseable for any reason, it is returned as a string.
+
+Strings that are similar to JSON, such as `[test me]` are not parseable, and will be returned as strings.
+
+Storing an array or object in a cookie:
+
+```javascript
+$.cookie('the_cookie1', [1, 2, 3]); // Automatically convert the array to JSON.
+$.cookie('the_cookie2', {foo: 'bar'}); // Automatically converts the object to JSON.
+```
+
+Retrieving an object or array stored as a JSON cookie:
+
+```javascript
+var cookie1 = $.cookie('the_cookie1'); // [1, 2, 3]
+var cookie2 = $.cookie('the_cookie2'); // {foo: 'bar'}
+```
+
+**Note about backwards compatibility**
+
+The `json` configuration setting has been removed and no longer has any effect. Since JSON parsing happens transparently now, most code will require no changes. But be aware: if a cookie cannot be parsed, the `$.cookie()` will return the raw string version will now be returned, whereas previously it would return `undefined`.
+
+Because `$.cookie()` may now return an object or array, if you were previously storing JSON in a cookie and passing it to `JSON.parse()` manually, you may now end up passing an object or array into `JSON.parse()`, causing an exception.
+
 ## Configuration
 
 ### raw
@@ -77,15 +108,7 @@ By default the cookie value is encoded/decoded when writing/reading, using `enco
 $.cookie.raw = true;
 ```
 
-### json
-
-Turn on automatic storage of JSON objects passed as the cookie value. Assumes `JSON.stringify` and `JSON.parse`:
-
-```javascript
-$.cookie.json = true;
-```
-
-## Cookie Options
+## Cookie options
 
 Cookie attributes can be set globally by setting properties of the `$.cookie.defaults` object or individually for each call to `$.cookie()` by passing a plain object to the options argument. Per-call options override the default options.
 
