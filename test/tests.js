@@ -59,52 +59,52 @@ test('raw = true', function () {
 	strictEqual($.cookie('c'), 'foo=bar', 'should include the entire value');
 });
 
-test('json = true', function () {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie.json = true;
-		$.cookie('c', { foo: 'bar' });
-		deepEqual($.cookie('c'), { foo: 'bar' }, 'should parse JSON');
-	} else {
-		ok(true);
-	}
-});
-
-test('not existing with json = true', function () {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie.json = true;
-		strictEqual($.cookie('whatever'), undefined, "won't throw exception");
-	} else {
-		ok(true);
-	}
-});
-
-test('string with json = true', function () {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie.json = true;
-		$.cookie('c', 'v');
-		strictEqual($.cookie('c'), 'v', 'should return value');
-	} else {
-		ok(true);
-	}
-});
-
-test('invalid JSON string with json = true', function () {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie('c', 'v');
-		$.cookie.json = true;
-		strictEqual($.cookie('c'), undefined, "won't throw exception, returns undefined");
-	} else {
-		ok(true);
-	}
-});
+// test('json = true', function () {
+//   expect(1);
+//
+//   if ('JSON' in window) {
+//     $.cookie.json = true;
+//     $.cookie('c', { foo: 'bar' });
+//     deepEqual($.cookie('c'), { foo: 'bar' }, 'should parse JSON');
+//   } else {
+//     ok(true);
+//   }
+// });
+//
+// test('not existing with json = true', function () {
+//   expect(1);
+//
+//   if ('JSON' in window) {
+//     $.cookie.json = true;
+//     strictEqual($.cookie('whatever'), undefined, "won't throw exception");
+//   } else {
+//     ok(true);
+//   }
+// });
+//
+// test('string with json = true', function () {
+//   expect(1);
+//
+//   if ('JSON' in window) {
+//     $.cookie.json = true;
+//     $.cookie('c', 'v');
+//     strictEqual($.cookie('c'), 'v', 'should return value');
+//   } else {
+//     ok(true);
+//   }
+// });
+//
+// test('invalid JSON string with json = true', function () {
+//   expect(1);
+//
+//   if ('JSON' in window) {
+//     $.cookie('c', 'v');
+//     $.cookie.json = true;
+//     strictEqual($.cookie('c'), undefined, "won't throw exception, returns undefined");
+//   } else {
+//     ok(true);
+//   }
+// });
 
 test('invalid URL encoding', function () {
 	expect(1);
@@ -178,12 +178,6 @@ test('value "[object Object]"', function () {
 	expect(1);
 	$.cookie('c', '[object Object]');
 	strictEqual($.cookie('c'), '[object Object]', 'should write value');
-});
-
-test('number', function () {
-	expect(1);
-	$.cookie('c', 1234);
-	strictEqual($.cookie('c'), '1234', 'should write value');
 });
 
 test('expires option as days from now', function () {
