@@ -41,8 +41,8 @@
 		try {
 			// Replace server-side written pluses with spaces.
 			// If we can't decode the cookie, ignore it, it's unusable.
-			s = decodeURIComponent(s.replace(pluses, ' '));
-			return $('<div>').attr('data-cookie', s).data('cookie');
+			// Utilize jQuery data() to automatically retrieve original values.
+			return $('<div>').attr('data-cookie', decodeURIComponent(s.replace(pluses, ' '))).data('cookie');
 		} catch(e) {}
 	}
 
