@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 		jshint: {
 			files: [
 				'Gruntfile.js',
-				'jquery.cookie.js'
+				'src/**/*.js'
 			],
 			options: {
 				jshintrc: true
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
 			},
 			build: {
 				files: {
-					'build/jquery.cookie-<%= pkg.version %>.min.js': 'jquery.cookie.js'
+					'build/jquery.cookie-<%= pkg.version %>.min.js': 'src/jquery.cookie.js'
 				}
 			}
 		},
@@ -33,7 +33,7 @@ module.exports = function (grunt) {
 				livereload: true
 			},
 			files: [
-				'jquery.cookie.js',
+				'src/**/*.js',
 				'test/tests.js'
 			],
 			tasks: 'default'
@@ -41,7 +41,7 @@ module.exports = function (grunt) {
 		compare_size: {
 			files: [
 				'build/jquery.cookie-<%= pkg.version %>.min.js',
-				'jquery.cookie.js'
+				'src/jquery.cookie.js'
 			],
 			options: {
 				compress: {
