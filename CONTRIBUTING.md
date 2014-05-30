@@ -39,7 +39,7 @@ You should see a green message in the console:
 You can also run the tests in the browser.  
 Start a test server from the project root:
 
-    $ grunt connect:tests
+    $ grunt specs
 
 This will automatically open the tests at http://127.0.0.1:9998/test/index.html in the default browser, with livereload enabled.
 

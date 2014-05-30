@@ -1,4 +1,6 @@
 node_modules
 build
+.grunt
 .sizecache.json
 *.log*
+_SpecRunner.html
