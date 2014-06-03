@@ -105,7 +105,7 @@
 	config.defaults = {};
 
 	$.removeCookie = function (key, options) {
-		if ($.cookie(key) === undefined) {
+		if (typeof $.cookie(key) === 'undefined') {
 			return false;
 		}
 
