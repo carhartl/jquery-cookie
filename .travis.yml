@@ -1,9 +1,12 @@
 language: node_js
 node_js:
-  - 0.10
+  - '0.10'
 before_script:
   - npm install -g grunt-cli
-script: grunt ci --verbose
+# Only use grunt-ci for commits pushed to this repo. Fall back to regular test
+# for pull requests (as secure variables won't be exposed there).
+script: |
+  test $SAUCE_ACCESS_KEY == 'false' && grunt ci --verbose || npm test
 env:
   global:
     - secure: HRae0kyIDDuhonvMi2SfEl1WJb4K/wX8WmzT9YkxFbmWwLjiOMkmqyuEyi76DbTC1cb9o7WwGVgbP1DhSm6n6m0Lz+PSzpprBN4QZuJc56jcc+tBA6gM81hyUufaTT0yUWz112Bu06kWIAs44w5PtG0FYZR0CuIN8fQvZi8fXCQ=
