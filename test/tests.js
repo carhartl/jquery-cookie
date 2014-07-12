@@ -79,6 +79,28 @@ test('json = true', function () {
 	}
 });
 
+test('Arrays are saved and returned correctly', function () {
+	expect(1);
+
+	if ('JSON' in window) {
+		$.cookie('c', ['foo', 'bar']);
+		deepEqual($.cookie('c'), ['foo', 'bar'], 'Array was not saved and returned correctly');
+	} else {
+		ok(true);
+	}
+});
+
+test('Objects are saved and returned correctly', function () {
+	expect(1);
+
+	if ('JSON' in window) {
+		$.cookie('c', { foo: 'bar' });
+		deepEqual($.cookie('c'), { foo: 'bar' }, 'Object was not saved and returned correctly');
+	} else {
+		ok(true);
+	}
+});
+
 test('not existing with json = true', function () {
 	expect(1);
 
@@ -102,18 +124,6 @@ test('string with json = true', function () {
 	}
 });
 
-test('invalid JSON string with json = true', function () {
-	expect(1);
-
-	if ('JSON' in window) {
-		$.cookie('c', 'v');
-		$.cookie.json = true;
-		strictEqual($.cookie('c'), undefined, "won't throw exception, returns undefined");
-	} else {
-		ok(true);
-	}
-});
-
 test('invalid URL encoding', function () {
 	expect(1);
 	document.cookie = 'bad=foo%';
@@ -121,6 +131,30 @@ test('invalid URL encoding', function () {
 	// Delete manually here because it requires raw === true...
 	$.cookie.raw = true;
 	$.removeCookie('bad');
+});
+
+// Make sure a URL encoded JSON Object cookie gets returned as an object
+test('cookie containing URL encoded JSON Object', function () {
+	expect(1);
+
+	if ('JSON' in window) {
+		document.cookie = 'foo=%7B%22bar%22%3A42%7D';
+		deepEqual($.cookie('foo'), { bar: 42 }, 'cookie containing URL encoded JSON Object did not get parsed correctly');
+	} else {
+		ok(true);
+	}
+});
+
+// Make sure a URL encoded JSON Array cookie gets returned as an object
+test('cookie containing URL encoded JSON Array', function () {
+	expect(1);
+
+	if ('JSON' in window) {
+		document.cookie = 'foo=%5B%22foo%22%2C%20%22bar%22%5D';
+		deepEqual($.cookie('foo'), ['foo', 'bar'], 'cookie containing URL encoded JSON Array did not get parsed correctly');
+	} else {
+		ok(true);
+	}
 });
 
 asyncTest('malformed cookie value in IE (#88, #117)', function () {
@@ -149,12 +183,6 @@ test('Call to read all when there are cookies', function () {
 
 test('Call to read all when there are no cookies at all', function () {
 	deepEqual($.cookie(), {}, 'returns empty object');
-});
-
-test('Call to read all with json: true', function () {
-	$.cookie.json = true;
-	$.cookie('c', { foo: 'bar' });
-	deepEqual($.cookie(), { c: { foo: 'bar' } }, 'returns JSON parsed cookies');
 });
 
 test('Call to read all with a badly encoded cookie', function () {
@@ -260,7 +288,34 @@ test('json = true', function () {
 
 	if ('JSON' in window) {
 		$.cookie('c', { foo: 'bar' });
-		strictEqual(document.cookie, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })), 'should stringify JSON');
+		strictEqual(document.cookie, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })),
+			'should stringify JSON');
+	} else {
+		ok(true);
+	}
+});
+
+// Objects saved in cookies should be stringified as JSON.
+test('Objects are stringified', function () {
+	expect(1);
+
+	if ('JSON' in window) {
+		$.cookie('c', { foo: 'bar' });
+		strictEqual(document.cookie, 'c=' + encodeURIComponent(JSON.stringify({ foo: 'bar' })),
+			'should stringify Object objects');
+	} else {
+		ok(true);
+	}
+});
+
+// Arrays saved in cookies should be stringified as JSON.
+test('Arrays are stringified', function () {
+	expect(1);
+
+	if ('JSON' in window) {
+		$.cookie('c', ['foo', 'bar']);
+		strictEqual(document.cookie, 'c=' + encodeURIComponent(JSON.stringify(['foo', 'bar'])),
+			'should stringify Array objects');
 	} else {
 		ok(true);
 	}
