@@ -113,8 +113,12 @@
 	};
 
 	config.defaults = {
-		onRemove: function( removeResult ) {},
-		onSet: function( setResult ) {}
+		onRemove: function( removeResult ) {
+			return removeResult;
+		},
+		onSet: function( setResult ) {
+			return setResult;	
+		}
 	};
 
 	$.removeCookie = function (key, options) {
