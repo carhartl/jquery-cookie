@@ -73,7 +73,7 @@
    			].join(''));			
 			
 			if( typeof options.onSet !== 'undefined' ) {
-				if( typeof options.onSet == 'function' ) {
+				if( typeof options.onSet === 'function' ) {
 					options.onSet( result );	
 				}
 			}
@@ -123,7 +123,7 @@
 		var result = !$.cookie( key );
 		
 		if( typeof options.onRemove !== 'undefined' ) {
-			if( typeof options.onRemove == 'function' ) {
+			if( typeof options.onRemove === 'function' ) {
 				options.onRemove( result );	
 			}
 		}
