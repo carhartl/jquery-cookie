@@ -72,10 +72,12 @@
    				options.secure  ? '; secure' : '',
    			].join(''));			
 			
-			if( typeof options.onSet !=== 'undefined' ) {
+			if( typeof options.onSet === 'undefined' ) {
+				// do nothing...
+			} else {
 				if( typeof options.onSet === 'function' ) {
 					options.onSet( setResult );	
-				}
+				}				
 			}
 
 			return setResult;
@@ -122,10 +124,12 @@
 		
 		var removeResult = !$.cookie( key );
 		
-		if( typeof options.onRemove !=== 'undefined' ) {
+		if( typeof options.onRemove === 'undefined' ) {
+			// do nothing...
+		} else {
 			if( typeof options.onRemove === 'function' ) {
 				options.onRemove( removeResult );	
-			}
+			}			
 		}
 		
 		return removeResult;
