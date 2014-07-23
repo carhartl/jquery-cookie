@@ -64,7 +64,7 @@
 				t.setTime(+t + days * 864e+5);
 			}
 			
-			var result = (document.cookie = [
+			var setResult = (document.cookie = [
 			    encode(key), '=', stringifyCookieValue(value),
 			    options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
    				options.path    ? '; path=' + options.path : '',
@@ -74,11 +74,11 @@
 			
 			if( typeof options.onSet !== 'undefined' ) {
 				if( typeof options.onSet === 'function' ) {
-					options.onSet( result );	
+					options.onSet( setResult );	
 				}
 			}
 
-			return result;
+			return setResult;
 		}
 
 		// Read
@@ -120,11 +120,11 @@
 		// Must not alter options, thus extending a fresh object...
 		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
 		
-		var result = !$.cookie( key );
+		var removeResult = !$.cookie( key );
 		
 		if( typeof options.onRemove !== 'undefined' ) {
 			if( typeof options.onRemove === 'function' ) {
-				options.onRemove( result );	
+				options.onRemove( removeResult );	
 			}
 		}
 		
