@@ -112,7 +112,10 @@
 		return result;
 	};
 
-	config.defaults = {};
+	config.defaults = {
+		onRemove: function( removeResult ) {},
+		onSet: function( setResult ) {}
+	};
 
 	$.removeCookie = function (key, options) {
 		if ($.cookie(key) === undefined) {
