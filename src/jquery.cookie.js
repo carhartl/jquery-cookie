@@ -128,7 +128,7 @@
 			}
 		}
 		
-		return result;
+		return removeResult;
 	};
 
 }));
