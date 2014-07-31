@@ -72,12 +72,8 @@
    				options.secure  ? '; secure' : '',
    			].join(''));			
 			
-			if( typeof options.onSet === 'undefined' ) {
-				// do nothing...
-			} else {
-				if( typeof options.onSet === 'function' ) {
-					options.onSet( setResult );	
-				}				
+			if( typeof options.onSet === 'function' ) {
+				options.onSet( setResult );				
 			}
 
 			return setResult;
@@ -112,14 +108,7 @@
 		return result;
 	};
 
-	config.defaults = {
-		onRemove: function( removeResult ) {
-			return removeResult;
-		},
-		onSet: function( setResult ) {
-			return setResult;	
-		}
-	};
+	config.defaults = {};
 
 	$.removeCookie = function (key, options) {
 		if ($.cookie(key) === undefined) {
@@ -131,12 +120,8 @@
 		
 		var removeResult = !$.cookie( key );
 		
-		if( typeof options.onRemove === 'undefined' ) {
-			// do nothing...
-		} else {
-			if( typeof options.onRemove === 'function' ) {
-				options.onRemove( removeResult );	
-			}			
+		if( typeof options.onRemove === 'function' ) {
+			options.onRemove( removeResult );	
 		}
 		
 		return removeResult;
