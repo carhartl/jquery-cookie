@@ -103,6 +103,7 @@
 	};
 
 	config.defaults = {};
+	config.version  = '1.4.1';
 
 	$.removeCookie = function (key, options) {
 		if ($.cookie(key) === undefined) {
