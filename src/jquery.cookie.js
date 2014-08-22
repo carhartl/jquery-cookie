@@ -9,6 +9,11 @@
 	if (typeof define === 'function' && define.amd) {
 		// AMD
 		define(['jquery'], factory);
+	} else if (typeof define === 'function' && define.cmd) {
+		// CMD
+		define(function () {
+			return factory;
+		});
 	} else if (typeof exports === 'object') {
 		// CommonJS
 		factory(require('jquery'));
