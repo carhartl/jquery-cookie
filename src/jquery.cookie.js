@@ -60,8 +60,23 @@
 			options = $.extend({}, config.defaults, options);
 
 			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setTime(+t + days * 864e+5);
+				var expireValue = options.expires, t = options.expires = new Date(), multiplier;
+				// Added Expire Unit
+				if( typeof options.expiresUnit !== 'string' || 
+					( options.expiresUnit === 'days' &&
+					  options.expiresUnit === 'hours'&&
+					  options.expiresUnit === 'minutes' )
+				) {
+					options.expiresUnit = 'days';
+				}
+				
+				switch(options.expiresUnit)	{
+					case 'days'   : multiplier = 864e+5; break; // multiplier for days   : 3600*24*1000
+					case 'hours'  : multiplier = 36e+5;  break; // multiplier for hours  : 3600*1000
+					case 'minutes': multiplier = 6e+4;   break; // multiplier for minutes: 60*1000
+				}
+
+				t.setTime(+t + expireValue * multiplier);
 			}
 
 			return (document.cookie = [
