@@ -63,11 +63,12 @@
 				var expireValue = options.expires, t = options.expires = new Date(), multiplier;
 				// Added Expire Unit
 				if( typeof options.expiresUnit !== 'string' || 
-					( options.expiresUnit == 'days' &&
-					  options.expiresUnit == 'hours'&&
-					  options.expiresUnit == 'minutes' )
-				)
+					( options.expiresUnit === 'days' &&
+					  options.expiresUnit === 'hours'&&
+					  options.expiresUnit === 'minutes' )
+				) {
 					options.expiresUnit = 'days';
+				}
 				
 				switch(options.expiresUnit)	{
 					case 'days'   : multiplier = 864e+5; break; // multiplier for days   : 3600*24*1000
