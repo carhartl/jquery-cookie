@@ -102,6 +102,17 @@
 		return result;
 	};
 
+	$.cookie.enabled = (function() {
+		var enabled = navigator.cookieEnabled;
+
+		if(typeof enabled === undefined && !enabled) {
+			document.cookie = 'test';
+			enabled = (document.cookie.indexOf('test') !== -1) ? true : false;
+		}
+
+		return enabled;
+	})();
+
 	config.defaults = {};
 
 	$.removeCookie = function (key, options) {
@@ -113,5 +124,4 @@
 		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
 		return !$.cookie(key);
 	};
-
 }));
