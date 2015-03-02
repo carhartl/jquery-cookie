@@ -110,8 +110,26 @@
 		}
 
 		// Must not alter options, thus extending a fresh object...
-		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-		return !$.cookie(key);
-	};
+		options = $.extend({}, options, { expires: -1 });
 
+		$.cookie(key, '', options);
+		var succeeded = !$.cookie(key);
+
+		// Browsers distinguish whether the default (=current) domain
+		// is explicitly passed or not, so try hard to remove by the
+		// opposite approach.
+		if (!succeeded) {
+			if (options.domain && options.domain === location.hostname) {
+				delete options.domain;
+				$.cookie(key, '', options);
+				succeeded = !$.cookie(key);
+			} else if (!options.domain) {
+				options.domain = location.hostname;
+				$.cookie(key, '', options);
+				succeeded = !$.cookie(key);
+			}
+		}
+
+		return succeeded;
+	};
 }));
