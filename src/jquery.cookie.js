@@ -62,6 +62,13 @@
 			if (typeof options.expires === 'number') {
 				var days = options.expires, t = options.expires = new Date();
 				t.setTime(+t + days * 864e+5);
+			}else if(options.expires === 'midnight'){
+				var t = new Date();
+				t.setDate(t.getDate()+1);
+				t.setHours(0);
+				t.setMinutes(0);
+				t.setSeconds(0);
+				options.expires = t
 			}
 
 			return (document.cookie = [
