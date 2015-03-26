@@ -68,6 +68,8 @@ $.cookie('name', 'value', { path: '/' });
 $.removeCookie('name'); // => false
 // This will work!
 $.removeCookie('name', { path: '/' }); // => true
+// Remove cookies from all paths
+$.removeCookieAllPath('name');
 ```
 
 *Note: when deleting a cookie, you must pass the exact same path, domain and secure options that were used to set the cookie, unless you're relying on the default options that is.*
