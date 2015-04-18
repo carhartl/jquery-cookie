@@ -1,6 +1,6 @@
 # IMPORTANT!
 
-This project is being moved to [Javascript Cookie](https://github.com/js-cookie/js-cookie), an implementation of jquery-cookie without jQuery.
+This project is being moved to [JavaScript Cookie](https://github.com/js-cookie/js-cookie), an implementation of jquery-cookie without jQuery.
 
 For more information check [the discussion](https://github.com/carhartl/jquery-cookie/issues/349).
 
