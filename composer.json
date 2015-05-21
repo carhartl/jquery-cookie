@@ -3,7 +3,7 @@
   "description": "A simple, lightweight jQuery plugin for reading, writing and deleting cookies",
   "type": "component",
   "require": {
-    "components/jquery": "~2"
+    "components/jquery": ">=1.2"
   },
   "license": "MIT",
   "extra": {
