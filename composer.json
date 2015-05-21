@@ -1,0 +1,17 @@
+{
+  "name": "carhartl/jquery-cookie",
+  "description": "A simple, lightweight jQuery plugin for reading, writing and deleting cookies",
+  "type": "component",
+  "require": {
+    "components/jquery": "*"
+  },
+  "license": "MIT",
+  "extra": {
+    "component": {
+      "name": "jquery.cookie",
+      "scripts": [
+        "src/jquery.cookie.js"
+      ]
+    }
+  }
+}
