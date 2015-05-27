@@ -2,6 +2,8 @@
 
 This project was moved to https://github.com/js-cookie/js-cookie, check [the discussion](https://github.com/carhartl/jquery-cookie/issues/349).
 
+New issues should be opened at https://github.com/js-cookie/js-cookie/issues
+
 # jquery.cookie [![Build Status](https://travis-ci.org/carhartl/jquery-cookie.png?branch=master)](https://travis-ci.org/carhartl/jquery-cookie) [![Code Climate](https://codeclimate.com/github/carhartl/jquery-cookie.png)](https://codeclimate.com/github/carhartl/jquery-cookie)
 
 A simple, lightweight jQuery plugin for reading, writing and deleting cookies.
