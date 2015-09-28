@@ -59,7 +59,7 @@
 		if (arguments.length > 1 && !$.isFunction(value)) {
 			options = $.extend({}, config.defaults, options);
 
-			if (typeof options.expires === 'number') {
+			if ($.isNumeric(options.expires)) {
 				var days = options.expires, t = options.expires = new Date();
 				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
 			}
