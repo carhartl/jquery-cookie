@@ -1,5 +1,5 @@
 /*!
- * jQuery Cookie Plugin v1.4.1
+ * jQuery Cookie Plugin v1.4.2-unreleased
  * https://github.com/carhartl/jquery-cookie
  *
  * Copyright 2006, 2014 Klaus Hartl
