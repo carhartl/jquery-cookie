@@ -1,6 +1,6 @@
 {
   "name": "jquery.cookie",
-  "version": "1.4.1",
+  "version": "1.4.2-unreleased",
   "description": "A simple, lightweight jQuery plugin for reading, writing and deleting cookies.",
   "main": "src/jquery.cookie.js",
   "directories": {
