@@ -90,7 +90,7 @@ $.cookie.raw = true;
 
 ### json
 
-Turn on automatic storage of JSON objects passed as the cookie value. Assumes `JSON.stringify` and `JSON.parse`:
+Turn on automatic storage of JSON objects passed as the cookie value. Executes `JSON.stringify` and `JSON.parse` when writing and reading the cookie respectively:
 
 ```javascript
 $.cookie.json = true;
