@@ -73,12 +73,12 @@ module.exports = function (grunt) {
 						{
 							browserName: 'iphone',
 							platform: 'OS X 10.9',
-							version: '7.1'
+							version: '7.1.1'
 						},
 						{
 							browserName: 'ipad',
 							platform: 'OS X 10.9',
-							version: '7.1'
+							version: '7.1.1'
 						},
 						// Android
 						{
