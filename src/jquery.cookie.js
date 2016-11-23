@@ -104,6 +104,7 @@
 	};
 
 	config.defaults = {};
+	config.version  = '1.4.1';
 
 	$.removeCookie = function (key, options) {
 		// Must not alter options, thus extending a fresh object...
