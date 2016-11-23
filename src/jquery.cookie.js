@@ -110,5 +110,20 @@
 		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
 		return !$.cookie(key);
 	};
+	
+	// Remove cookies from all paths
+	$.removeCookieAllPath = function(key) {
+	        if ($.cookie(key) === undefined) {
+	            return false;
+	        }
+	
+	        var pathBits = window.location.pathname.split('/');
+	        var pathCurrent = '';
+	
+	        for (var i = 0; i < pathBits.length; i++) {
+	            pathCurrent += ((pathCurrent.substr(-1) != '/') ? '/' : '') + pathBits[i];
+	            $.removeCookie(key, { path: pathCurrent });
+	        }
+	};
 
 }));
