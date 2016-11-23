@@ -63,14 +63,20 @@
 				var days = options.expires, t = options.expires = new Date();
 				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
 			}
+			
+			var setResult = (document.cookie = [
+			    encode(key), '=', stringifyCookieValue(value),
+			    options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+   				options.path    ? '; path=' + options.path : '',
+   				options.domain  ? '; domain=' + options.domain : '',
+   				options.secure  ? '; secure' : '',
+   			].join(''));			
+			
+			if( typeof options.onSet === 'function' ) {
+				options.onSet( setResult );				
+			}
 
-			return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
+			return setResult;
 		}
 
 		// Read
@@ -108,7 +114,14 @@
 	$.removeCookie = function (key, options) {
 		// Must not alter options, thus extending a fresh object...
 		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-		return !$.cookie(key);
+		
+		var removeResult = !$.cookie( key );
+		
+		if( typeof options.onRemove === 'function' ) {
+			options.onRemove( removeResult );	
+		}
+		
+		return removeResult;
 	};
 
 }));
