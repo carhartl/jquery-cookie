@@ -328,6 +328,32 @@ test('[] used in name', function () {
 	strictEqual(document.cookie, '', 'delete the cookie');
 });
 
+test('with no domain options for set and remove', function() {
+	expect(1);
+	$.cookie('c1', 'v');
+	strictEqual($.removeCookie('c1'), true, 'returns true');
+});
+
+test('with domain option for set and none for remove', function() {
+	expect(1);
+	var options = {domain: location.hostname};
+	$.cookie('c2', 'v', options);
+	strictEqual($.removeCookie('c2'), true, 'returns true');
+});
+
+test('with no domain option for set and one for remove', function() {
+	expect(1);
+	var options = {domain: location.hostname};
+	$.cookie('c3', 'v');
+	strictEqual($.removeCookie('c3', options), true, 'returns true');
+});
+
+test('with domain options for set and remove', function() {
+	expect(1);
+	var options = {domain: location.hostname};
+	$.cookie('c4', 'v', options);
+	strictEqual($.removeCookie('c4', options), true, 'returns true');
+});
 
 module('conversion', lifecycle);
 
