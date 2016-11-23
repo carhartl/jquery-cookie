@@ -111,4 +111,9 @@
 		return !$.cookie(key);
 	};
 
+	return {
+		removeCookie: $.removeCookie,
+		cookie: $.cookie
+	};
+
 }));
