@@ -132,6 +132,12 @@ Define the domain where the cookie is valid. Default: domain of page where the c
 
 If true, the cookie transmission requires a secure protocol (https). Default: `false`.
 
+### HttpOnly
+
+    httpOnly: true
+
+If true, the cookie shouldn't be accessible via document.cookie. Default: `false`.
+
 ## Converters
 
 Provide a conversion function as optional last argument for reading, in order to change the cookie's value
