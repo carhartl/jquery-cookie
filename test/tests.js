@@ -43,6 +43,11 @@ test('RFC 2068 quoted string', function () {
 	strictEqual($.cookie('c'), 'v@address.com"\\"', 'should decode RFC 2068 quoted string');
 });
 
+test('Check if enabled property returns boolean', function () {
+	expect(1);
+	strictEqual($.cookie.enabled, true || false, 'should return a boolean value');
+});
+
 test('decode', function () {
 	expect(1);
 	document.cookie = encodeURIComponent(' c') + '=' + encodeURIComponent(' v');
