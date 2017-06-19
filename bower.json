@@ -1,6 +1,7 @@
 {
   "name": "jquery.cookie",
   "version": "1.4.1",
+  "license": "MIT",
   "main": [
     "src/jquery.cookie.js"
   ],
